@@ -1,0 +1,15 @@
+baseURL = "http://mysqltopgsql.com/"
+languageCode = "en-us"
+title = "MySQL to PostgreSQL"
+theme = "ananke"
+
+MetaDataFormat = "yaml"
+DefaultContentLanguage = "en"
+SectionPagesMenu = "main"
+Paginate = 9
+googleAnalytics = ""
+enableRobotsTXT = true
+
+[params]
+  description = "Migrate from MySQL to PostgreSQL"
+  github = "https://github.com/dimitri/pgloader"
