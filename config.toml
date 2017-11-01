@@ -1,13 +1,15 @@
 baseURL = "http://mysqltopgsql.com/"
 languageCode = "en-us"
 title = "MySQL to PostgreSQL"
+
 theme = "ananke"
+publishDir = "docs"
 
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
 SectionPagesMenu = "main"
 Paginate = 12
-googleAnalytics = ""
+googleAnalytics = "UA-47059482-4"
 enableRobotsTXT = true
 
 [params]

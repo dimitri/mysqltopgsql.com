@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>MySQL to PostgreSQL  | What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.26" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    <link href='http://mysqltopgsql.com/dist/main.css' rel='stylesheet' type="text/css" />
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?" />
+<meta property="og:description" content="SQL basics explained" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mysqltopgsql.com/post/joins/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?">
+<meta itemprop="description" content="SQL basics explained">
+
+
+
+<meta itemprop="wordCount" content="1612">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?"/>
+<meta name="twitter:description" content="SQL basics explained"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('http://mysqltopgsql.com/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="http://mysqltopgsql.com/" class="f3 fw2 hover-white no-underline white-90 dib">
+      MySQL to PostgreSQL
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="FAQ page">
+              FAQ
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/project/" title="Project Methodology page">
+              Project Methodology
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
+    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+  </a>
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            SQL basics explained
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <div class="flex-l mt2 mw8 center">
+    <article class="center cf pv5 ph3 ph4-ns mw7">
+      <h1 class="f1 athelas">
+        What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?
+      </h1>
+      <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray">
+        
+
+<blockquote>
+<p>A JOIN is an operation that applies to two relations and returns a
+relation. The different kinds of JOINs implement different operations. The
+PostgreSQL documentation section <a href="https://www.postgresql.org/docs/current/static/queries-table-expressions.html">Table
+Expressions</a>
+gives all the details.</p>
+</blockquote>
+
+<p>In the same way that <code>+</code> and <code>-</code> and <code>*</code> are different operations in maths,
+the different kind of joins are different relational operations.</p>
+
+<p>The main thing is to remember that we are working with relations, and a JOIN
+applies to a pair of relations at a time.</p>
+
+<p>The INNER and OUTER keywords in SQL are <em>noise</em> words. You don&rsquo;t have to use
+them, as they bear no semantics. A JOIN is always an INNER JOIN, a LEFT JOIN
+is always a LEFT OUTER JOIN.</p>
+
+<p>We&rsquo;re going to use the <a href="http://ergast.com/mrd/db/">http://ergast.com/mrd/db/</a> database for our
+examples. You can download the MySQL dump of this database, then once
+restored into your MySQL instance, load it to PostgreSQL with
+<a href="http://pgloader.io">pgloader</a>:</p>
+
+<pre><code>$ createdb f1db
+$ pgloader mysql://root@localhost/f1db pgsql:///f1db
+</code></pre>
+
+<h1 id="inner-join"><em>Inner</em> Join</h1>
+
+<p>An Inner Join is an intersection operation. From the PostgreSQL docs:</p>
+
+<blockquote>
+<p>For each row R1 of T1, the joined table has a row for each row in T2 that
+satisfies the join condition with R1.</p>
+</blockquote>
+
+<p>In the f1db database, we can associate seasons and races so as to display
+for each race the Wikipedia URL of the season:</p>
+
+<pre><code>  select name, date, seasons.url
+    from      seasons
+         join races using(year)
+order by date desc
+   limit 3;
+</code></pre>
+
+<p>And here&rsquo;s our result set:</p>
+
+<pre><code>         name         │    date    │                          url                          
+══════════════════════╪════════════╪═══════════════════════════════════════════════════════
+ Abu Dhabi Grand Prix │ 2017-11-26 │ https://en.wikipedia.org/wiki/2017_Formula_One_season
+ Brazilian Grand Prix │ 2017-11-12 │ https://en.wikipedia.org/wiki/2017_Formula_One_season
+ Mexican Grand Prix   │ 2017-10-29 │ https://en.wikipedia.org/wiki/2017_Formula_One_season
+(3 rows)
+</code></pre>
+
+<p>Another way to write the same query is:</p>
+
+<pre><code>  select name, date, seasons.url
+    from      seasons
+         join races
+           on seasons.year = races.year
+order by date desc
+   limit 3;
+</code></pre>
+
+<p>We replaced the <code>using()</code> syntax with a more generic <code>on</code> clause for the
+join condition. Of course the result is exactly the same as before.</p>
+
+<h1 id="left-outer-join">Left <em>Outer</em> Join</h1>
+
+<blockquote>
+<p>First, an inner join is performed. Then, for each row in T1 that does not
+satisfy the join condition with any row in T2, a joined row is added with
+null values in columns of T2. Thus, the joined table always has at least
+one row for each row in T1.</p>
+</blockquote>
+
+<p>The f1db database has every lap and pitstop recorded. Of course not every
+driver makes it to the pitstop at every lap, so if we want to display
+information about both laps ahd pitstops within the same relation, we need a
+LEFT JOIN as in the following query:</p>
+
+<pre><code>   select drivers.surname,
+          lap,
+          laptimes.milliseconds * interval '1 ms' as laptime,
+          position,
+          stop,
+          pitstops.milliseconds * interval '1ms' as stoptime
+
+    from           laptimes
+         left join pitstops using(raceid, driverid, lap)
+         join drivers using(driverid)
+
+   where raceid=972
+     and position between 1 and 3
+     and lap between 28 and 35
+
+order by lap, position;
+</code></pre>
+
+<p>We only look at the first three drivers of the race, and in order not to
+have too many rows to show we limit the result set to where pitstops
+happened, which apparently was in between the 28th and 35th laps.</p>
+
+<p>Thanks to using a LEFT JOIN, we get NULL values for the <code>stop</code> and
+<code>stoptime</code> columns for laps where our selected drivers didn&rsquo;t show up at the
+pit stop.</p>
+
+<pre><code>  surname  │ lap │       laptime       │ position │ stop │   stoptime    
+═══════════╪═════╪═════════════════════╪══════════╪══════╪═══════════════
+ Vettel    │  28 │ @ 1 min 39.192 secs │        1 │    ¤ │ ¤
+ Räikkönen │  28 │ @ 1 min 39.486 secs │        2 │    ¤ │ ¤
+ Hamilton  │  28 │ @ 1 min 38.913 secs │        3 │    ¤ │ ¤
+ Vettel    │  29 │ @ 1 min 38.828 secs │        1 │    ¤ │ ¤
+ Räikkönen │  29 │ @ 1 min 43.57 secs  │        2 │    1 │ @ 30.152 secs
+ Hamilton  │  29 │ @ 1 min 39.685 secs │        3 │    ¤ │ ¤
+ Vettel    │  30 │ @ 1 min 38.291 secs │        1 │    ¤ │ ¤
+ Hamilton  │  30 │ @ 1 min 44.91 secs  │        2 │    1 │ @ 29.739 secs
+ Bottas    │  30 │ @ 1 min 38.208 secs │        3 │    ¤ │ ¤
+ Vettel    │  31 │ @ 1 min 38.347 secs │        1 │    ¤ │ ¤
+ Bottas    │  31 │ @ 1 min 38.16 secs  │        2 │    ¤ │ ¤
+ Räikkönen │  31 │ @ 1 min 37.372 secs │        3 │    ¤ │ ¤
+ Vettel    │  32 │ @ 1 min 38.306 secs │        1 │    ¤ │ ¤
+ Bottas    │  32 │ @ 1 min 38.704 secs │        2 │    ¤ │ ¤
+ Räikkönen │  32 │ @ 1 min 37.832 secs │        3 │    ¤ │ ¤
+ Vettel    │  33 │ @ 1 min 38.553 secs │        1 │    ¤ │ ¤
+ Bottas    │  33 │ @ 1 min 39.169 secs │        2 │    ¤ │ ¤
+ Räikkönen │  33 │ @ 1 min 37.958 secs │        3 │    ¤ │ ¤
+ Vettel    │  34 │ @ 1 min 43.112 secs │        1 │    1 │ @ 30.097 secs
+ Bottas    │  34 │ @ 1 min 38.426 secs │        2 │    ¤ │ ¤
+ Räikkönen │  34 │ @ 1 min 38.091 secs │        3 │    ¤ │ ¤
+ Bottas    │  35 │ @ 1 min 37.978 secs │        1 │    ¤ │ ¤
+ Vettel    │  35 │ @ 1 min 58.663 secs │        2 │    ¤ │ ¤
+ Räikkönen │  35 │ @ 1 min 38.715 secs │        3 │    ¤ │ ¤
+(24 rows)
+</code></pre>
+
+<h1 id="right-outer-join">Right <em>Outer</em> Join</h1>
+
+<blockquote>
+<p>First, an inner join is performed. Then, for each row in T2 that does not
+satisfy the join condition with any row in T1, a joined row is added with
+null values in columns of T1. This is the converse of a left join: the
+result table will always have a row for each row in T2.</p>
+</blockquote>
+
+<p>So basically the previous query can be written as a RIGHT JOIN if we
+consider the <em>pitstops</em> first:</p>
+
+<pre><code>   select drivers.surname,
+          lap,
+          laptimes.milliseconds * interval '1 ms' as laptime,
+          position,
+          stop,
+          pitstops.milliseconds * interval '1ms' as stoptime
+
+    from            pitstops
+         right join laptimes using(raceid, driverid, lap)
+         join drivers using(driverid)
+
+   where raceid=972
+     and position between 1 and 3
+     and lap between 28 and 35
+
+order by lap, position;
+</code></pre>
+
+<p>We get the same results as before, of course.</p>
+
+<h1 id="lateral-join">Lateral Join</h1>
+
+<p>With PostgreSQL it&rsquo;s also possible to use a LATERAL JOIN. This allows to
+implement a parameterized subquery for every row found in a table.</p>
+
+<blockquote>
+<p>When a FROM item contains LATERAL cross-references, evaluation proceeds as
+follows: for each row of the FROM item providing the cross-referenced
+column(s), or set of rows of multiple FROM items providing the columns,
+the LATERAL item is evaluated using that row or row set&rsquo;s values of the
+columns. The resulting row(s) are joined as usual with the rows they were
+computed from. This is repeated for each row or set of rows from the
+column source table(s).</p>
+</blockquote>
+
+<p>A good example of a LEFT JOIN LATERAL is a top-n query. In the following
+example we find the top three drivers per seasons, by how many points they
+accumulated each season:</p>
+
+<pre><code>select seasons.year,
+       drivers.code,
+       format('%s %s', drivers.forename, drivers.surname) as driver,
+       points
+   from seasons
+        left join lateral
+        (
+           select races.year, driverid, sum(points) as points
+             from results join races using(raceid)
+            where races.year = seasons.year
+         group by year, driverid
+         order by points desc
+            limit 3
+         )
+         top3 on true
+         join drivers using(driverid)
+    where seasons.year between 2012 and 2016
+order by seasons.year, points desc;
+</code></pre>
+
+<p>One thing to note about the LEFT JOIN LATERAL is that the join condition is
+implemented in the subquery&rsquo;s WHERE clause. Then we issue the strange <code>ON
+TRUE</code> join condition so that we can respect the standard SQL syntax for join
+operators.</p>
+
+<p>We arbitrary limit the number of rows in the output by restricting the
+result set to seasons from 2012 to 2016, and here&rsquo;s our result:</p>
+
+<pre><code> year │ code │      driver      │ points 
+══════╪══════╪══════════════════╪════════
+ 2012 │ VET  │ Sebastian Vettel │    281
+ 2012 │ ALO  │ Fernando Alonso  │    278
+ 2012 │ RAI  │ Kimi Räikkönen   │    207
+ 2013 │ VET  │ Sebastian Vettel │    397
+ 2013 │ ALO  │ Fernando Alonso  │    242
+ 2013 │ WEB  │ Mark Webber      │    199
+ 2014 │ HAM  │ Lewis Hamilton   │    384
+ 2014 │ ROS  │ Nico Rosberg     │    317
+ 2014 │ RIC  │ Daniel Ricciardo │    238
+ 2015 │ HAM  │ Lewis Hamilton   │    381
+ 2015 │ ROS  │ Nico Rosberg     │    322
+ 2015 │ VET  │ Sebastian Vettel │    278
+ 2016 │ ROS  │ Nico Rosberg     │    385
+ 2016 │ HAM  │ Lewis Hamilton   │    380
+ 2016 │ RIC  │ Daniel Ricciardo │    256
+(15 rows)
+</code></pre>
+
+<h1 id="full-outer-join">Full <em>Outer</em> Join</h1>
+
+<blockquote>
+<p>First, an inner join is performed. Then, for each row in T1 that does not
+satisfy the join condition with any row in T2, a joined row is added with
+null values in columns of T2. Also, for each row of T2 that does not
+satisfy the join condition with any row in T1, a joined row with null
+values in the columns of T1 is added.</p>
+</blockquote>
+
+<p>TODO: find a good FULL OUTER JOIN example in the f1db model.</p>
+
+<h1 id="cross-join">Cross Join</h1>
+
+<blockquote>
+<p>For every possible combination of rows from T1 and T2 (i.e., a Cartesian
+product), the joined table will contain a row consisting of all columns in
+T1 followed by all columns in T2. If the tables have N and M rows
+respectively, the joined table will have N * M rows.</p>
+
+<p>FROM T1 CROSS JOIN T2 is equivalent to FROM T1 INNER JOIN T2 ON TRUE (see
+below). It is also equivalent to FROM T1, T2.</p>
+</blockquote>
+
+<p>TODO: find a good CROSS JOIN example in the f1db model.</p>
+
+      </section>
+      
+
+
+    </article>
+    <div class="ph3 mt2 mt6-ns">
+      
+
+
+
+
+
+
+
+  <div class="bg-light-gray pa3">
+    <ul>
+      <li class="list b mb3">
+        9 More Posts
+      </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/concatenate/" class="link ph2 pv2 db black">
+            Can I concatenate multiple MySQL rows into one field?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/sql-injection/" class="link ph2 pv2 db black">
+            How can I prevent SQL injection in PHP?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/user-accounts/" class="link ph2 pv2 db black">
+            How to get a list of MySQL user accounts?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/import/" class="link ph2 pv2 db black">
+            How to import an SQL file using the command line in MySQL?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/csv/" class="link ph2 pv2 db black">
+            How to output MySQL query results in CSV format?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/sequences/" class="link ph2 pv2 db black">
+            How to reset AUTO_INCREMENT in MySQL?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/timestamps/" class="link ph2 pv2 db black">
+            Should I use field &#39;datetime&#39; or &#39;timestamp&#39;?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/unicode/" class="link ph2 pv2 db black">
+            UTF-8 all the way through
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/joins/" class="link ph2 pv2 db black o-50">
+            What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/boolean/" class="link ph2 pv2 db black">
+            Which MySQL data type to use for storing boolean values?
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+    </div>
+  </div>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://mysqltopgsql.com/" >
+    &copy; 2017 MySQL to PostgreSQL
+  </a>
+  
+
+
+
+
+
+
+
+  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
+    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+  </a>
+
+
+  </div>
+</footer>
+
+    <script src="http://mysqltopgsql.com/dist/app.bundle.js" async></script>
+
+  </body>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Migrating from MySQL to PostgreSQL on MySQL to PostgreSQL</title>
+    <link>http://mysqltopgsql.com/</link>
+    <description>Recent content in Migrating from MySQL to PostgreSQL on MySQL to PostgreSQL</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="http://mysqltopgsql.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Can I concatenate multiple MySQL rows into one field?</title>
+      <link>http://mysqltopgsql.com/post/concatenate/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/concatenate/</guid>
+      <description>Concatenating values from several rows as a single value summarizing all of them is done by using an AGGREGATE in SQL. PostgreSQL comes with several aggregates that are nice to use when one needs to keep every entry in the output.
+ For a complete list of PostgreSQL Aggregates, the documentation is once again all you need. Have a look at Aggregate Functions.
+PostgreSQL Arrays PostgreSQL arrays can be built from the result of a query thanks to the array_agg() aggregate.</description>
+    </item>
+    
+    <item>
+      <title>How can I prevent SQL injection in PHP?</title>
+      <link>http://mysqltopgsql.com/post/sql-injection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/sql-injection/</guid>
+      <description>When using PHP, be sure to use the pg_query_params function, or an higher-level API that then uses that PostgreSQL facility. Then you&amp;rsquo;re protected against any and all SQL injection attacks, by design.
+ An SQL Injections is a security breach, one made famous by the Exploits of a Mom xkcd comic episode in which we read about little Bobby Tables.
+  Exploits of a Mom   PostgreSQL implements a protocol level facility to send the static SQL query text separately from its dynamic arguments.</description>
+    </item>
+    
+    <item>
+      <title>How to get a list of MySQL user accounts?</title>
+      <link>http://mysqltopgsql.com/post/user-accounts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/user-accounts/</guid>
+      <description>When using psql, use the \du command.
+ Here&amp;rsquo;s a sample output of running that command when using the psql command line tool:
+~# \du List of roles Role name │ Attributes │ Member of ═══════════╪════════════════════════════════════════════════════════════╪═══════════ app │ │ {} appdev │ Create role │ {} cdstore │ │ {appdev} critical │ │ {app} dbowner │ │ {} dim │ Superuser, Create role, Create DB │ {} dontcare │ │ {app} f1db │ │ {appdev} notsomuch │ │ {app} postgres │ Superuser, Create role, Create DB, Replication, Bypass RLS │ {}  The psql application supports readline history and completion.</description>
+    </item>
+    
+    <item>
+      <title>How to import an SQL file using the command line in MySQL?</title>
+      <link>http://mysqltopgsql.com/post/import/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/import/</guid>
+      <description>Use the \i command in psql, or the command line psql -a -f file.sql
+ The PostgreSQL psql command line tool knows how to parse a file containing SQL statements and send them all to a PostgreSQL server. Several ways are possible.
+If you have a magic.create.sql file that contains the following:
+create schema if not exists magic; create table magic.allsets(data jsonb);  It is possible to connect to your target database then have psql execute the commands from the file in the following way:</description>
+    </item>
+    
+    <item>
+      <title>How to output MySQL query results in CSV format?</title>
+      <link>http://mysqltopgsql.com/post/csv/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/csv/</guid>
+      <description>PostgreSQL implements the COPY protocol and command to output data formatted in CSV. The psql command line client also knows how to produce some other formats, such as XML, asciidoc, or latex.
+ The simplest way to have your query result in CSV is the following:
+copy ( select format(&#39;%s %s&#39;, drivers.forename, drivers.surname) as name, sum(points) as points from drivers join results using(driverid) join races using(raceid) where races.year = 2016 group by drivers.</description>
+    </item>
+    
+    <item>
+      <title>How to reset AUTO_INCREMENT in MySQL?</title>
+      <link>http://mysqltopgsql.com/post/sequences/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/sequences/</guid>
+      <description>In PostgreSQL, use the ALTER SEQUENCE command, or the setval function.
+ ALTER SEQUENCE tablename_colname_seq RESTART WITH 1;  Resetting All Sequences The following SQL query generates an SQL statement that allows resetting all sequences from a database to the current maximum value found in the column the sequence is attached to:
+SELECT &#39;select &#39; || trim(trailing &#39;)&#39; from replace(pg_get_expr(d.adbin, d.adrelid), &#39;nextval&#39;, &#39;setval&#39;)) || &#39;, (select max( &#39; || a.</description>
+    </item>
+    
+    <item>
+      <title>Should I use field &#39;datetime&#39; or &#39;timestamp&#39;?</title>
+      <link>http://mysqltopgsql.com/post/timestamps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/timestamps/</guid>
+      <description>Always use timestamp with time zone, or its spelling timestamptz, when using PostgreSQL.
+ The calendar is something very complex, and easy to get wrong. Do you know about ISO week numbers, leap years, and time zone political changes? How do compute which day is tomorrow?
+Did you know that the year before AD 1 in our Gregorian calendar is the year 1 BC? Yes, right, there&amp;rsquo;s no year zero in our calendar.</description>
+    </item>
+    
+    <item>
+      <title>UTF-8 all the way through</title>
+      <link>http://mysqltopgsql.com/post/unicode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/unicode/</guid>
+      <description>PostgreSQL implements UTF-8 as a server encoding and as a client encoding, so that you can use unicode all the way through.
+ The default encoding and collation for a PostgreSQL database server are setup at initdb time. This is usually done by your packaging system at installation.
+Database Encoding It&amp;rsquo;s important to set your environement correctly before installing PostgreSQL, in order to avoid surprises. The following example sets the system to use en_US.</description>
+    </item>
+    
+    <item>
+      <title>What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?</title>
+      <link>http://mysqltopgsql.com/post/joins/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/joins/</guid>
+      <description>A JOIN is an operation that applies to two relations and returns a relation. The different kinds of JOINs implement different operations. The PostgreSQL documentation section Table Expressions gives all the details.
+ In the same way that + and - and * are different operations in maths, the different kind of joins are different relational operations.
+The main thing is to remember that we are working with relations, and a JOIN applies to a pair of relations at a time.</description>
+    </item>
+    
+    <item>
+      <title>Which MySQL data type to use for storing boolean values?</title>
+      <link>http://mysqltopgsql.com/post/boolean/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mysqltopgsql.com/post/boolean/</guid>
+      <description>In PostgreSQL, use the boolean data type. Done.
+ When using pgloader to migrate your MySQL database to PostgreSQL, the following cast rule is the default:
+CAST type tinyint to boolean using tinyint-to-boolean  It&amp;rsquo;s of course then possible to migrate a tinyint column from MySQL to a PostgreSQL smallint with the following specific rule:
+CAST column table_a.count to smallint  Boolean Columns When you have a boolean column in PostgreSQL then things work as you would expect.</description>
+    </item>
+    
+  </channel>
+</rss>

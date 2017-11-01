@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>MySQL to PostgreSQL  | How can I prevent SQL injection in PHP?</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.26" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    <link href='http://mysqltopgsql.com/dist/main.css' rel='stylesheet' type="text/css" />
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="How can I prevent SQL injection in PHP?" />
+<meta property="og:description" content="Little Bobby Tables is fun and all that, but still…" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mysqltopgsql.com/post/sql-injection/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="How can I prevent SQL injection in PHP?">
+<meta itemprop="description" content="Little Bobby Tables is fun and all that, but still…">
+
+
+
+<meta itemprop="wordCount" content="330">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="How can I prevent SQL injection in PHP?"/>
+<meta name="twitter:description" content="Little Bobby Tables is fun and all that, but still…"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('http://mysqltopgsql.com/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="http://mysqltopgsql.com/" class="f3 fw2 hover-white no-underline white-90 dib">
+      MySQL to PostgreSQL
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="FAQ page">
+              FAQ
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/project/" title="Project Methodology page">
+              Project Methodology
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
+    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+  </a>
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">How can I prevent SQL injection in PHP?</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Little Bobby Tables is fun and all that, but still…
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <div class="flex-l mt2 mw8 center">
+    <article class="center cf pv5 ph3 ph4-ns mw7">
+      <h1 class="f1 athelas">
+        How can I prevent SQL injection in PHP?
+      </h1>
+      <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray">
+        <blockquote>
+<p>When using PHP, be sure to use the
+<a href="http://php.net/manual/function.pg-query-params.php">pg_query_params</a>
+function, or an higher-level API that then uses that PostgreSQL facility.
+Then you&rsquo;re protected against any and all SQL injection attacks, by
+design.</p>
+</blockquote>
+
+<p>An <em>SQL Injections</em> is a security breach, one made famous by the <a href="https://xkcd.com/327/">Exploits
+of a Mom</a> <code>xkcd</code> comic episode in which we read about
+<em>little Bobby Tables</em>.</p>
+
+
+<figure >
+    <a href="https://xkcd.com/327/">
+        <img src="/img/exploits_of_a_mom.png" />
+    </a>
+    
+    <figcaption>
+        <h4>Exploits of a Mom</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>PostgreSQL implements a protocol level facility to send the static SQL query
+text separately from its dynamic arguments. An SQL injection happens when
+the database server is mistakenly led to consider a dynamic argument of a
+query as part of the query text. Sending those parts as separate entities
+over the protocol means that SQL injection is no longer possible.</p>
+
+<p>The PostgreSQL protocol is fully documented and you can read more about
+<em>extended query</em> support on the <a href="https://www.postgresql.org/docs/current/static/protocol-flow.html">Message
+Flow</a>
+documentation page. Also relevant is the <code>PQexecParams</code> driver API,
+documented as part of the <a href="https://www.postgresql.org/docs/current/static/libpq-exec.html">command execution
+functions</a>
+of the <code>libpq</code> PostgreSQL C driver.</p>
+
+<p>A lot of PostgreSQL application drivers are based on the libpq C driver,
+which implements the PostgreSQL protocol and is maintained alongside the
+main server&rsquo;s code. Some drivers variants also exist that don&rsquo;t link to any
+C runtime, in which case the PostgreSQL protocol has been implemented in
+another programming language. That&rsquo;s the case for variants of the JDBC
+driver, and the <code>pq</code> Go driver too, among others.</p>
+
+<p>It is advisable that you read the documentation of your current driver and
+understand how to send SQL query parameters separately from the main SQL
+query text; this is a reliable way to never have to worry about <em>SQL
+injection</em> problems ever again.</p>
+
+<p>In particular, <strong><em>never</em></strong> build a query string by concatenating your query
+arguments directly into your query strings, i.e. in the application client
+code. Never use any library, ORM or another tooling that would do that. When
+building SQL query strings that way, you open your application code to
+serious security risk for no reason.</p>
+
+      </section>
+      
+
+
+    </article>
+    <div class="ph3 mt2 mt6-ns">
+      
+
+
+
+
+
+
+
+  <div class="bg-light-gray pa3">
+    <ul>
+      <li class="list b mb3">
+        9 More Posts
+      </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/concatenate/" class="link ph2 pv2 db black">
+            Can I concatenate multiple MySQL rows into one field?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/sql-injection/" class="link ph2 pv2 db black o-50">
+            How can I prevent SQL injection in PHP?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/user-accounts/" class="link ph2 pv2 db black">
+            How to get a list of MySQL user accounts?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/import/" class="link ph2 pv2 db black">
+            How to import an SQL file using the command line in MySQL?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/csv/" class="link ph2 pv2 db black">
+            How to output MySQL query results in CSV format?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/sequences/" class="link ph2 pv2 db black">
+            How to reset AUTO_INCREMENT in MySQL?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/timestamps/" class="link ph2 pv2 db black">
+            Should I use field &#39;datetime&#39; or &#39;timestamp&#39;?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/unicode/" class="link ph2 pv2 db black">
+            UTF-8 all the way through
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/joins/" class="link ph2 pv2 db black">
+            What&#39;s the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?
+          </a>
+        </li>
+      
+        <li class="list f5 w-100 hover-bg-white nl1">
+          
+          <a href="/post/boolean/" class="link ph2 pv2 db black">
+            Which MySQL data type to use for storing boolean values?
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+    </div>
+  </div>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://mysqltopgsql.com/" >
+    &copy; 2017 MySQL to PostgreSQL
+  </a>
+  
+
+
+
+
+
+
+
+  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
+    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+  </a>
+
+
+  </div>
+</footer>
+
+    <script src="http://mysqltopgsql.com/dist/app.bundle.js" async></script>
+
+  </body>
+</html>
