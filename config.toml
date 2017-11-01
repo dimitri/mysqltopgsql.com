@@ -6,7 +6,7 @@ theme = "ananke"
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
 SectionPagesMenu = "main"
-Paginate = 9
+Paginate = 12
 googleAnalytics = ""
 enableRobotsTXT = true
 

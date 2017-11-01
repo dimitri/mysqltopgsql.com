@@ -40,13 +40,49 @@ In PostgreSQL we chose to stop talking about slavery as being something
 crucial to our daily lifes. So we setup High Availability with a *Primary*
 server and a set of *Secondary* servers, also named *Standby* or *Replica*.
 
+If you want to understand all the details about the setup, you can read the
+whole PostgreSQL documentation about [High Availability, Load Balancing, and
+Replication](https://www.postgresql.org/docs/current/static/high-availability.html)
+and then about [Logical
+Replication](https://www.postgresql.org/docs/current/static/logical-replication.html).
+
+The PostgreSQL documentation best in class, and patches that add or modify
+PostgreSQL features are only accepted when they also update all the impacted
+documentation. Which means that our documentation is always uptodate and
+trustworthy. That's why you don't see much comments in there. If any.
+
+If you're not sure about what to do now, setup a PostgreSQL Hot Standby
+physical replica by following the steps at [Hot
+Standby](https://wiki.postgresql.org/wiki/Hot_Standby). It looks more
+complex than it is. All you need to do is :
+
+  1. check your `postgresql.conf` to allow for replication
+  2. open replication privileges on the network in `pg_hba.conf`
+  3. use `pg_basebackup` to have a remote copy of your *Primary* data
+  4. start your *Replica* with a setup that connects to the *Primary*
+
+That's it really.
+
+# MySQL Row-Based Replication
+
+In MySQL it's possible to setup replication and still edit local data in
+other tables in the Replica. This is a solid use-case for some
+architectures. Of course, as soon as the replica has a different data set
+than the Primary, then the solution doesn't provide High Availability. You
+might still be interested into having a similar solution in PostgreSQL.
+
+Starting with PostgreSQL 10 you can use *Logical Replication*. It's easy to
+setup, as seen in the [Logical Replication Quick
+Setup](https://www.postgresql.org/docs/10/static/logical-replication-quick-setup.html)
+part of the PostgreSQL documentation.
+
 # CI/CD
 
 That's how we do it now right? It's all automated everywhere into a Jenkins
 or a Travis setup, or something equivalent. Or even something better. Well
 then, do the same thing for your migration project.
 
-# Nightly data migration from production
+# Nightly Data Migration
 
 Chances are that once your data migration script is tweaked for all the data
 you've seen through, some new data is going to show up in production that
@@ -62,3 +98,27 @@ seldom are the good ones.
 >
 > Albert King, Born Under a Bad Sign
 
+# Porting the Code from MySQL to PostgreSQL
+
+Now that you have a CI/CD environment fresh with yesterday's production data
+every morning, it's time to rewrite those MySQL queries for PostgreSQL.
+There are a couple things to know when doing that:
+
+  - PostgreSQL likes JOINs
+  
+    Yes that's right, you can actually have very fast running queries using
+    JOINs in PostgreSQL.
+    
+  - Quoting is different
+  
+    In PostgreSQL we quote SQL identifiers using "double quotes" and literal
+    values using 'single quotes'.
+    
+  - `on duplicate key update` is written `on conflict do update`
+  
+    And it might even be `do nothing`, too.
+
+  - See the [FAQ](/post) section for more conversion hints.
+
+When you see differences in the SQL in between PostgreSQL and SQL, mostly it
+is PostgreSQL following the SQL standard syntax.
