@@ -10,7 +10,7 @@ DefaultContentLanguage = "en"
 SectionPagesMenu = "main"
 Paginate = 12
 googleAnalytics = "UA-47059482-4"
-enableRobotsTXT = true
+enableRobotsTXT = false
 
 [params]
   description = "Migrate from MySQL to PostgreSQL"
