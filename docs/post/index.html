@@ -9,13 +9,19 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.26" />
+    <meta name="generator" content="Hugo 0.31.1" />
     
     
-      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+      <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
     
 
-    <link href='http://mysqltopgsql.com/dist/main.css' rel='stylesheet' type="text/css" />
+    
+    
+      <link href="/dist/css/app.ab4b67a3ea25990fa8279f3b7ef08b61.css" rel="stylesheet">
+    
+
+    
+
     
       
     
@@ -49,9 +55,18 @@
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="FAQ"/>
 <meta name="twitter:description" content="MySQL to PostgreSQL Frequently Asked Questions"/>
 
+      
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-47059482-4', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+    
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-near-white production">
 
     
 
@@ -124,6 +139,7 @@
 
     <main class="pb7" role="main">
       
+
   <article class="pa3 pa4-ns nested-copy-line-height nested-img">
   <main class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
     <p>We took the most voted <a href="https://stackoverflow.com/questions/tagged/mysql?sort=votes&amp;pageSize=15">StackOverflow MySQL
@@ -132,10 +148,10 @@ and give answers to them when using PostgreSQL, so that you&rsquo;ll find yourse
 at home right away.</p>
 
   </main>
-    
     <section class="flex-ns flex-wrap justify-around mt5">
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/concatenate/" class="link black dim">
@@ -152,6 +168,7 @@ PostgreSQL Arrays PostgreSQL arrays can be built from the result of a query than
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/sql-injection/" class="link black dim">
@@ -168,6 +185,7 @@ PostgreSQL Arrays PostgreSQL arrays can be built from the result of a query than
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/user-accounts/" class="link black dim">
@@ -184,6 +202,7 @@ PostgreSQL Arrays PostgreSQL arrays can be built from the result of a query than
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/import/" class="link black dim">
@@ -201,6 +220,7 @@ create schema if not exists magic; create table magic.allsets(data jsonb);  It i
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/csv/" class="link black dim">
@@ -217,6 +237,7 @@ copy ( select format('%s %s', drivers.forename, drivers.surname) as name, sum(po
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/sequences/" class="link black dim">
@@ -233,6 +254,7 @@ SELECT 'select ' || trim(trailing ')' from replace(pg_get_expr(d.adbin, d.adreli
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/timestamps/" class="link black dim">
@@ -249,6 +271,7 @@ Did you know that the year before AD 1 in our Gregorian calendar is the year 1 B
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/unicode/" class="link black dim">
@@ -265,6 +288,7 @@ Database Encoding It&rsquo;s important to set your environement correctly before
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/joins/" class="link black dim">
@@ -281,6 +305,7 @@ The main thing is to remember that we are working with relations, and a JOIN app
         </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
+          
             <div class="mb3 pa4 mid-gray overflow-hidden">
     <h1 class="f3 near-black">
       <a href="/post/boolean/" class="link black dim">
@@ -306,7 +331,7 @@ CAST column table_a.count to smallint  Boolean Columns When you have a boolean c
     <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://mysqltopgsql.com/" >
-    &copy; 2017 MySQL to PostgreSQL
+    &copy; 2018 MySQL to PostgreSQL
   </a>
   
 
@@ -327,7 +352,10 @@ CAST column table_a.count to smallint  Boolean Columns When you have a boolean c
   </div>
 </footer>
 
-    <script src="http://mysqltopgsql.com/dist/app.bundle.js" async></script>
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
 
   </body>
 </html>
