@@ -15,3 +15,7 @@ enableRobotsTXT = false
 [params]
   description = "Migrate from MySQL to PostgreSQL"
   github = "https://github.com/dimitri/pgloader"
+  custom_css = ["css/custom.css"]
+
+[author]
+  twitter = "tapoueh"
