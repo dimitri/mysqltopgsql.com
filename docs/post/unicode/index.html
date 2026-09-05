@@ -1,197 +1,23 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>MySQL to PostgreSQL  | UTF-8 all the way through</title>
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.31.1" />
-    
-    
-      <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
-    
-
-    
-    
-      <link href="/dist/css/app.ab4b67a3ea25990fa8279f3b7ef08b61.css" rel="stylesheet">
-    
-
-    
-      <link rel="stylesheet" href="http://mysqltopgsql.com/css/custom.css">
-    
-
-    
-      
-    
-
-    
-
-    <meta property="og:title" content="UTF-8 all the way through" />
-<meta property="og:description" content="PostgreSQL speaks Unicode real well." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://mysqltopgsql.com/post/unicode/" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="UTF-8 all the way through">
-<meta itemprop="description" content="PostgreSQL speaks Unicode real well.">
-
-
-
-<meta itemprop="wordCount" content="690">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="UTF-8 all the way through"/>
-<meta name="twitter:description" content="PostgreSQL speaks Unicode real well."/>
-
-      
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-47059482-4', 'auto');
-ga('send', 'pageview');
-</script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
-
-    
-  </head>
-
-  <body class="ma0 avenir bg-near-white production">
-
-    
-   
-  
-
-  
-  
-  <header class="cover bg-top" style="background-image: url('http://mysqltopgsql.com/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg');">
-    <div class="pb3-m pb6-l bg-black-60">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="http://mysqltopgsql.com/" class="f3 fw2 hover-white no-underline white-90 dib">
-      MySQL to PostgreSQL
-    </a>
-    <div class="flex-l items-center">
-      
-        <ul class="pl0 mr3">
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/about/" title="About page">
-              About
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/post/" title="FAQ page">
-              FAQ
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/project/" title="Project Methodology page">
-              Project Methodology
-            </a>
-          </li>
-          
-        </ul>
-      
-      
-
-
-
-
-
-
-
-  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
-    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
-  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
-</svg>
-
-  </a>
-
-
-    </div>
-  </div>
-</nav>
-
-      <div class="tc-l pv6 ph3 ph4-ns">
-        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">UTF-8 all the way through</h1>
-        
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
-            PostgreSQL speaks Unicode real well.
-          </h2>
-        
-      </div>
-    </div>
-  </header>
-
-
-
-    <main class="pb7" role="main">
-      
-  <div class="flex-l mt2 mw8 center">
-    <article class="center cf pv5 ph3 ph4-ns mw7">
-      <h1 class="f1 athelas">
-        UTF-8 all the way through
-      </h1>
-      <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray">
-        
-
-<blockquote>
-<p>PostgreSQL implements UTF-8 as a server encoding and as a client encoding,
-so that you can use unicode all the way through.</p>
-</blockquote>
-
-<p>The default encoding and collation for a PostgreSQL database server are
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>UTF-8 all the way through &#183; MySQL to PostgreSQL</title><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css><link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/custom.8d61dbca301808ff864de0233fe98d3921e3e297f8060669effcb4d79aaa9ded.css></head><body><header class=site-header><div class=wrapper><nav class=site-nav><a class=site-logo href=/>mysqltopgsql.com</a>
+<button type=button class=site-nav-toggle aria-expanded=false aria-controls=site-nav-menu aria-label=Menu>
+<span></span><span></span><span></span></button><div class=site-nav-menu id=site-nav-menu><ul><li><a href=/project/>Methodology</a></li><li><a href=/post/>FAQ</a></li><li><a href=/course/>Course</a></li><li><a href=/about/>About</a></li><li><a href=/support/>Support</a></li><li><a href=/course/#login-box>Login</a></li></ul><a href=https://github.com/dimitri/pgloader class=site-nav-icon title="pgloader on GitHub" target=_blank><i class="fa-brands fa-github"></i></a></div><a href=/course/ class=sticky-cta><span class=sticky-cta-label>Get the Course &mdash; </span>$99</a></nav></div></header><script>(function(){var e=document.querySelector(".site-nav-toggle"),t=document.getElementById("site-nav-menu");if(!e||!t)return;e.addEventListener("click",function(){var n=t.classList.toggle("is-open");e.classList.toggle("is-open",n),e.setAttribute("aria-expanded",n?"true":"false")}),t.querySelectorAll("a").forEach(function(n){n.addEventListener("click",function(){t.classList.remove("is-open"),e.classList.remove("is-open"),e.setAttribute("aria-expanded","false")})})})()</script><meta name=description content="PostgreSQL speaks Unicode real well."><meta property="og:description" content="PostgreSQL speaks Unicode real well."><meta property="og:type" content="website"><meta property="og:title" content="UTF-8 all the way through"><meta property="og:url" content="http://mysqltopgsql.com/post/unicode/"><meta property="og:site_name" content="MySQL to PostgreSQL"><meta name=twitter:card content="summary"><meta name=twitter:title content="MySQL to PostgreSQL"><meta name=twitter:description content="PostgreSQL speaks Unicode real well."><meta name=twitter:image content="http://mysqltopgsql.com/images/demo/slide.jpg"><meta name=twitter:creator content="@tapoueh"><main><div class=faq-lesson><div class=wrapper><article class=faq-lesson-content><nav class=faq-breadcrumb><a href=/post/>FAQ</a> <span>&#8250;</span> UTF-8 all the way through</nav><h1>UTF-8 all the way through</h1><p class=faq-lede>PostgreSQL speaks Unicode real well.</p><div class=page-content><blockquote><p>PostgreSQL implements UTF-8 as a server encoding and as a client encoding,
+so that you can use unicode all the way through.</p></blockquote><p>The default encoding and collation for a PostgreSQL database server are
 setup at
-<a href="https://www.postgresql.org/docs/current/static/app-initdb.html">initdb</a>
-time. This is usually done by your packaging system at installation.</p>
-
-<h1 id="database-encoding">Database Encoding</h1>
-
-<p>It&rsquo;s important to set your environement correctly before installing
+<a href=https://www.postgresql.org/docs/current/static/app-initdb.html>initdb</a>
+time. This is usually done by your packaging system at installation.</p><h1 id=database-encoding>Database Encoding</h1><p>It&rsquo;s important to set your environement correctly before installing
 PostgreSQL, in order to avoid surprises. The following example sets the
 system to use <code>en_US.UTF-8</code> before installing PostgreSQL on a docker
-container using debian:</p>
-
-<pre><code>ENV DEBIAN_FRONTEND noninteractive
+container using debian:</p><pre tabindex=0><code>ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get install -y locales
-RUN echo &quot;en_US.UTF-8 UTF-8&quot; &gt; /etc/locale.gen &amp;&amp; \
+RUN echo &#34;en_US.UTF-8 UTF-8&#34; &gt; /etc/locale.gen &amp;&amp; \
     locale-gen en_US.UTF-8 &amp;&amp; \
     dpkg-reconfigure locales &amp;&amp; \
     /usr/sbin/update-locale LANG=en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
-</code></pre>
-
-<p>To check your current installation settings, you can have a look at the
-<code>template0</code> and <code>template1</code> databases settings:</p>
-
-<pre><code>\l template[01]
-</code></pre>
-
-<p>We can see that our local PostgreSQL <em>cluster</em> is using the intended server
-side settings for unicode:</p>
-
-<pre><code>                                  List of databases
+</code></pre><p>To check your current installation settings, you can have a look at the
+<code>template0</code> and <code>template1</code> databases settings:</p><pre tabindex=0><code>\l template[01]
+</code></pre><p>We can see that our local PostgreSQL <em>cluster</em> is using the intended server
+side settings for unicode:</p><pre tabindex=0><code>                                  List of databases
    Name    │  Owner   │ Encoding │   Collate   │    Ctype    │   Access privileges   
 ═══════════╪══════════╪══════════╪═════════════╪═════════════╪═══════════════════════
  template0 │ postgres │ UTF8     │ en_US.UTF-8 │ en_US.UTF-8 │ =c/postgres          ↵
@@ -199,44 +25,26 @@ side settings for unicode:</p>
  template1 │ postgres │ UTF8     │ en_US.UTF-8 │ en_US.UTF-8 │ =c/postgres          ↵
            │          │          │             │             │ postgres=CTc/postgres
 (2 rows)
-</code></pre>
-
-<p>When that&rsquo;s not the case, you need to destroy your setup and start from
+</code></pre><p>When that&rsquo;s not the case, you need to destroy your setup and start from
 scratch again. How exactly to do that depend on your distribution. Or maybe
-on your Cloud provider.</p>
-
-<h1 id="server-encoding-and-client-encoding">Server Encoding and Client Encoding</h1>
-
-<p>You can also have an <em>UTF8</em> encoded database and use a legacy application
+on your Cloud provider.</p><h1 id=server-encoding-and-client-encoding>Server Encoding and Client Encoding</h1><p>You can also have an <em>UTF8</em> encoded database and use a legacy application
 (or programming language) that doesn&rsquo;t know how to handle Unicode properly.
 In that case, you can ask PostgreSQL to convert all and any data on the fly
 between the server-side encoding and your favorite client-side encoding,
-thanks to the <em>client_encoding</em> setting.</p>
-
-<pre><code class="language-sql">show client_encoding;
-</code></pre>
-
-<p>Here again, we use UTF8 client side, which allows handling French
-accentuated characters we saw previously.</p>
-
-<pre><code class="language-psql"> client_encoding 
+thanks to the <em>client_encoding</em> setting.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>show</span> client_encoding;
+</span></span></code></pre></div><p>Here again, we use UTF8 client side, which allows handling French
+accentuated characters we saw previously.</p><pre tabindex=0><code class=language-psql data-lang=psql> client_encoding 
 ═════════════════
  UTF8
 (1 row)
-</code></pre>
-
-<p>Be aware that not all combinations of <em>server encoding</em> and <em>client
+</code></pre><p>Be aware that not all combinations of <em>server encoding</em> and <em>client
 encoding</em> make sense. While it is possible for PostgreSQL to communicate
 with your application using the <em>latin1</em> encoding on the client side if the
 server side dataset includes texts in incompatible encodings, PostgreSQL
 will issue an error. Such texts might be written using non-Latin scripts
-such as Cyrillic, Chinese, Japanese, Arabic or other languages.</p>
-
-<p>From the Emacs facility <code>M-x view-hello-file</code>, here&rsquo;s a table with spelling
+such as Cyrillic, Chinese, Japanese, Arabic or other languages.</p><p>From the Emacs facility <code>M-x view-hello-file</code>, here&rsquo;s a table with spelling
 of hello in plenty of different languages and scripts, all encoded in
-<em>UTF8</em>:</p>
-
-<pre><code class="language-psql">          language          │            hello        
+<em>UTF8</em>:</p><pre tabindex=0><code class=language-psql data-lang=psql>          language          │            hello        
 ════════════════════════════╪═════════════════════════════
  Czech (čeština)            │ Dobrý den
  Danish (dansk)             │ Hej / Goddag / Halløj
@@ -268,68 +76,21 @@ of hello in plenty of different languages and scripts, all encoded in
  Japanese (日本語)          │ こんにちは / ｺﾝﾆﾁﾊ
  Chinese (中文,普通话,汉语) │ 你好
  Cantonese (粵語,廣東話)    │ 早晨, 你好
-</code></pre>
-
-<p>Now, of course, I can&rsquo;t have that data sent to me in <em>latin1</em>:</p>
-
-<pre><code class="language-psql">yesql# set client_encoding to latin1;
+</code></pre><p>Now, of course, I can&rsquo;t have that data sent to me in <em>latin1</em>:</p><pre tabindex=0><code class=language-psql data-lang=psql>yesql# set client_encoding to latin1;
 SET
-yesql# select * from hello where language ~ 'Georgian';
-ERROR:  character with byte sequence 0xe1 0x83 0xa5 in encoding &quot;UTF8&quot; has no equivalent in encoding &quot;LATIN1&quot;
+yesql# select * from hello where language ~ &#39;Georgian&#39;;
+ERROR:  character with byte sequence 0xe1 0x83 0xa5 in encoding &#34;UTF8&#34; has no equivalent in encoding &#34;LATIN1&#34;
 yesql# reset client_encoding ;
 RESET
-</code></pre>
-
-<p>So if it&rsquo;s possible for you, use <em>UTF-8</em> encoding and you&rsquo;ll have a much
+</code></pre><p>So if it&rsquo;s possible for you, use <em>UTF-8</em> encoding and you&rsquo;ll have a much
 simpler life. It must be noted that Unicode encoding makes comparing and
 sorting text a rather costly operation. That said being fast and wrong is
-not an option, so we are going to still use unicode text!</p>
-
-      </section>
-      <ul class="pa0">
-  
-</ul>
-
-    </article>
-    <div class="ph3 mt2 mt6-ns">
-      
-
-
-
-
-
-    </div>
-  </div>
-
-    </main>
-    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://mysqltopgsql.com/" >
-    &copy; 2018 MySQL to PostgreSQL
-  </a>
-  
-
-
-
-
-
-
-
-  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
-    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
-  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
-</svg>
-
-  </a>
-
-
-  </div>
-</footer>
-
-    
-
-  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
-
-
-  </body>
-</html>
+not an option, so we are going to still use unicode text!</p></div></article><aside class=faq-sidebar><div class=faq-sidebar-block><h6>More Questions</h6><ul><li><a href=/post/sequences/>How to reset AUTO_INCREMENT in MySQL?</a></li><li><a href=/post/boolean/>Which MySQL data type to use for storing boolean values?</a></li><li><a href=/post/identifier-case-sensitivity/>Why did my queries break after migrating — is PostgreSQL case-sensitive?</a></li><li><a href=/post/zero-dates/>How do I handle MySQL's 0000-00-00 zero dates in PostgreSQL?</a></li><li><a href=/post/enum-types/>How does MySQL's ENUM type migrate to PostgreSQL?</a></li></ul></div><div class=faq-sidebar-cta><i class="fa-solid fa-graduation-cap"></i><h6>Go Further</h6><p>This FAQ is one piece of the full Continuous Migration course &mdash; pgloader, pg_auto_failover, and hands-on exercises.</p><a href=/course/ class="btn btn-primary">Get the Course</a></div></aside></div></div><div class=cta-box><div class="wrapper cta-box-inner"><h2 class=cta-title>Ready to leave MySQL behind for good?</h2><p class=cta-copy>This is one piece of a bigger method &mdash;
+<strong>pgloader, pg_auto_failover, and the stored-procedure porting
+no tool automates for you</strong> &mdash; built for developers
+making exactly this move.</p><a class=cta-button href=/course/>Get the MySQL &rarr; PostgreSQL Course</a></div></div></main><footer class=footer><div class=wrapper><div class=about_block><h6>about pgloader</h6><p>pgloader is the open-source tool named in nearly every MySQL-to-PostgreSQL
+migration guide published — it automates schema translation, data
+loading, and casting rules in a single command line. This site is
+written by pgloader's author.</p><p>Everything here — the methodology, the FAQ, the course — comes
+from actually running migrations, not from reading about them. See
+the project itself at <a href=https://pgloader.io>pgloader.io</a>.</p><ul><li><a target=_blank href=mailto:dim@tapoueh.org>email</a></li><li><a target=_blank href=https://github.com/dimitri/pgloader>github</a></li></ul></div><div class=footer_right_col><div class=faq_block><h6>FAQ</h6><dl><dt>Is this actually free, or is that a trick?</dt><dd>The Continuous Migration core — why to migrate, the budget, the target architecture, and pg_auto_failover — is free, permanently, no card required. The hands-on pgloader mechanics, casting rules, and stored-procedure porting are the paid course.</dd><dt>Do I need a PostgreSQL background to use this?</dt><dd>No — this is written for developers and DBAs coming from MySQL. Where PostgreSQL behaves differently, that's the whole point of the FAQ section.</dd><dt>Does pgloader handle Oracle or MS SQL Server too?</dt><dd>Yes, MS SQL Server is a supported source today; Oracle is on pgloader's roadmap, not yet shipped. This site is scoped to MySQL specifically.</dd><dt>I run pgloader in production — should I be paying for something?</dt><dd>If pgloader is part of your production workflow, its maintenance is worth funding — see the <a href=/support/>Support pgloader</a> page.</dd></dl></div><div class=whatsnew_block><h6>Elsewhere</h6><ul><li><a href=https://github.com/dimitri/pgloader>pgloader on GitHub</a></li><li><a href=https://oss.theartofpostgresql.com/pgloader/>pgloader maintenance & support</a></li><li><a href=https://theartofpostgresql.com/book/>The Art of PostgreSQL &mdash; the book</a></li><li><a href=https://theartofpostgresql.com/book/updates/>2026 Second Edition update</a></li><li><a href=https://theartofpostgresql.com/course/>General PostgreSQL courses</a></li><li><a href=https://theartofpostgresql.com/masterclass/>Live masterclasses</a></li><li><a href=https://theartofpostgresql.com>&rarr; The Art of PostgreSQL</a></li></ul></div></div></div></footer><div class=copyright><div class=wrapper>&copy; 2026 MySQL to PostgreSQL. Part of <a href=https://theartofpostgresql.com>The Art of PostgreSQL</a>.</div></div></body></html>

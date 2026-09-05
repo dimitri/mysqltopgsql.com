@@ -1,53 +1,115 @@
-{{ $featured_image := .Param "featured_image" | default "images/gohugo-default-sample-hero-image.jpg" }}
-{{ if $featured_image }}
-  {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
-  {{ $featured_image := (trim $featured_image "/") | absURL }}
-  <header class="cover bg-top" style="background-image: url('{{ $featured_image }}');">
-    <div class="bg-black-60">
-      {{ partial "site-navigation.html" .}}
-      <div class="tc-l pv4 pv6-l ph3 ph4-ns">
-        <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
-          {{ .Title | default .Site.Title }}
-        </h1>
-        {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3">
-            {{ . }}
-          </h2>
-        {{ end }}
+<header class="site-header">
+  <div class="wrapper">
+    <nav class="site-nav">
+      <a class="site-logo" href="{{ "/" | relURL }}">mysqltopgsql.com</a>
+      {{/* Below ~700px there isn't room for 6 links + the GitHub icon +
+           the CTA in one row — the old fallback was flex-direction:column,
+           which just stacked all of it into a tall list pushed above the
+           fold on every single page. Real mobile pattern instead: links
+           collapse into a toggled panel, the CTA (the one thing worth
+           always keeping visible) stays on the bar. */}}
+      <button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-nav-menu" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="site-nav-menu" id="site-nav-menu">
+        <ul>
+          <li><a href="{{ "/project/" | relURL }}">Methodology</a></li>
+          <li><a href="{{ "/post/" | relURL }}">FAQ</a></li>
+          <li><a href="{{ "/course/" | relURL }}">Course</a></li>
+          <li><a href="{{ "/about/" | relURL }}">About</a></li>
+          <li><a href="{{ "/support/" | relURL }}">Support</a></li>
+          {{/* Points at the course page's own sign-in box (course/list.html
+               already says "Sign in above" in its CTA copy — there was no
+               actual sign-in form anywhere on that page for that to refer
+               to, so this both gives Login a destination and fixes that
+               dangling reference), not a separate login page — one real
+               sign-in form for returning customers is enough. */}}
+          <li><a href="{{ "/course/" | relURL }}#login-box">Login</a></li>
+        </ul>
+        <a href="{{ .Site.Params.github }}" class="site-nav-icon" title="pgloader on GitHub" target="_blank"><i class="fa-brands fa-github"></i></a>
+      </div>
+      <a href="{{ "/course/" | relURL }}" class="sticky-cta"><span class="sticky-cta-label">Get the Course &mdash; </span>{{ .Site.Params.course_price }}</a>
+    </nav>
+  </div>
+
+  {{ if .IsHome }}
+  <div class="site-hero site-hero-centered">
+    <div class="wrapper">
+      <p class="site-hero-eyebrow">Free &middot; MySQL &rarr; PostgreSQL</p>
+      <h1>{{ .Title | default .Site.Title }}</h1>
+      {{ with .Params.description }}<p class="site-hero-desc site-hero-desc-centered">{{ . }}</p>{{ end }}
+      {{/* The homepage hero made a claim and then stopped — no figures to
+           check it against and nothing to click, so the first screen did
+           no work at all. Three counts, all of them verifiable one click
+           away, and the page's one primary action. Numbers are computed
+           from the content, not typed in, so they can't drift. */}}
+      <div class="cp-stats-bar">
+        <div class="cp-stat"><span class="cp-stat-n">{{ len (where .Site.RegularPages "Section" "post") }}</span><span class="cp-stat-l">FAQ answers</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">11</span><span class="cp-stat-l">Course modules</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">4</span><span class="cp-stat-l">Free to read</span></div>
+      </div>
+      <div class="buttons site-hero-buttons">
+        <a href="{{ "/course/" | relURL }}" class="btn btn-primary">Get the Course &mdash; {{ .Site.Params.course_price }}</a>
+        <a href="{{ "/project/" | relURL }}" class="btn btn-secondary">Read the Method</a>
       </div>
     </div>
-{{ else }}
-  <header>
-    <div class="pb3-m pb6-l {{ .Site.Params.background_color_class | default "bg-black" }}">
-      {{ partial "site-navigation.html" . }}
-      <div class="tc-l pv3 ph3 ph4-ns">
-        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
-          {{ .Title | default .Site.Title }}
-        </h1>
-        {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
-            {{ . }}
-          </h2>
-        {{ end }}
+  </div>
+  {{ else if .IsSection }}
+  {{/* Section index pages only (About, Methodology, FAQ hub, Course, Support)
+       — individual FAQ lesson pages skip this and use their own compact
+       breadcrumb+h1 instead (post/single.html), same as yesql's own
+       hub-gets-a-hero / lesson-doesn't split on theartofpostgresql.com. */}}
+  <div class="site-hero site-hero-centered">
+    <div class="wrapper">
+      {{ with .Params.eyebrow }}<p class="site-hero-eyebrow">{{ . }}</p>{{ end }}
+      {{ with .Params.icon }}<i class="{{ . }} site-hero-icon"></i>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.description }}<p class="site-hero-desc site-hero-desc-centered">{{ . }}</p>{{ end }}
+      {{ if eq .Section "course" }}
+      <div class="cp-stats-bar">
+        <div class="cp-stat"><span class="cp-stat-n">11</span><span class="cp-stat-l">Modules</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">4</span><span class="cp-stat-l">Free</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">7</span><span class="cp-stat-l">Full Course</span></div>
       </div>
+      {{ end }}
     </div>
+  </div>
+  {{ end }}
+</header>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.site-nav-toggle');
+  var menu = document.getElementById('site-nav-menu');
+  if (!toggle || !menu) return;
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('is-open');
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  // Close on nav (incl. same-page anchors like Login's #login-box) so the
+  // panel doesn't stay open covering the page after the visitor taps a link.
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      menu.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+<!-- open graph data -->
+<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ .Site.Title }}">
+<meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="twitter:image" content="{{ "/images/demo/slide.jpg" | absURL }}">
+{{ with .Site.Params.twitter }}
+  <meta name="twitter:creator" content="@{{ . }}">
 {{ end }}
-
-        <!-- open graph data -->
-    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}">
-    <meta property="og:url" content="http://mysqltopgsql.com/">
-    <meta property="og:site_name" content="{{ .Site.Title }}">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ .Site.Title }}">
-    <meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <meta name="twitter:image" content="http://mysqltopgsql.com/img/TypeCaster.jpg">    
-    {{ with .Site.Author.twitter }}
-      <meta name="twitter:creator" content="@{{ . }}">
-    {{ end }}
-
-
-  </header>
-    

@@ -2,8 +2,14 @@ baseURL = "http://mysqltopgsql.com/"
 languageCode = "en-us"
 title = "MySQL to PostgreSQL"
 
-theme = "ananke"
 publishDir = "docs"
+
+# Vendored 1:1 from ~/dev/TAOP/taop.xyz/themes/taop — real header/footer/
+# typography/button/section markup and the real style.css, not a hand-ported
+# approximation. This site's own layouts/ override only what's genuinely new
+# (course page, FAQ hub/lesson, support page, login form) — everything else
+# falls through to the real theme.
+theme = "taop"
 
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
@@ -16,6 +22,30 @@ enableRobotsTXT = false
   description = "Migrate from MySQL to PostgreSQL"
   github = "https://github.com/dimitri/pgloader"
   custom_css = ["css/custom.css"]
+  course_url = "https://theartofpostgresql.com/from-mysql"
+  # $99 once, whole course (modules 5-11; 1-4 stay free) — see the earlier
+  # pricing brief. buy_url is a placeholder until the real ThriveCart
+  # product exists; swap it in one place here once it does, everything
+  # that renders course_price/course_buy_url picks it up automatically.
+  course_price = "$99"
+  course_buy_url = "#"
+  twitter = "tapoueh"
+  # The parent brand's own products — footer "Elsewhere" directory and the
+  # About page's book mention. book_update_url is the 2026 Second Edition
+  # update specifically (new PG12-18 coverage, pgvector chapter, Citus,
+  # companion app.theartofpostgresql.com platform) — link that, not just
+  # the book's own page, so existing-owner readers see what's new.
+  book_url = "https://theartofpostgresql.com/book/"
+  book_update_url = "https://theartofpostgresql.com/book/updates/"
+  taop_course_url = "https://theartofpostgresql.com/course/"
+  masterclass_url = "https://theartofpostgresql.com/masterclass/"
 
 [author]
   twitter = "tapoueh"
+
+[markup.goldmark.renderer]
+  # Trusted single-author content only — needed so content/project/_index.md
+  # can wrap its steps in real <section class="section"> bands (matching the
+  # rest of the site's marketing-section language) instead of one long
+  # markdown wall of H1s.
+  unsafe = true

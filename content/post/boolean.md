@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 3
+icon: "fa-solid fa-toggle-on"
 title: "Which MySQL data type to use for storing boolean values?"
 description: "PostgreSQL has a boolean data type for you"
 ---

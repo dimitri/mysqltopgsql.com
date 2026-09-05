@@ -1,0 +1,1576 @@
+/*
+  mysqltopgsql.com stylesheet — shares the palette, type, and component
+  language of theartofpostgresql.com (app.taop.xyz/public/css/app.css) so
+  this site reads as part of the same family, since it funnels traffic into
+  TAOP's MySQL -> PostgreSQL course. Fonts are self-hosted locally (see
+  static/fonts/) rather than linked to TAOP's own site.
+*/
+
+@font-face {
+  font-family: 'Bookman';
+  src: url('/fonts/BookmanStdLight.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bookman';
+  src: url('/fonts/BookmanStdLightItalic.woff2') format('woff2');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Bookman';
+  src: url('/fonts/BookmanStdMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bookman';
+  src: url('/fonts/BookmanStdMediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+:root {
+  --ink:            #2e2241;
+  --heading:        #372649;
+  --body-text:      #67527a;
+  --muted:          #896da1;
+  --accent:         #60b2d3;
+  --bg:             #f9f9f9;
+  --panel-bg:       #ffffff;
+  --panel-alt:      #f8f7f9;
+  --border:         #e5e3e7;
+  --header-bg:      #372649;
+  --footer-bg:      #181224;
+  --code-bg:        #272822;
+  --gradient-end:   #4a3666;
+  --muted-on-dark:  #dfdde1;
+  --faint-on-dark:  #b8a9c9;
+  --danger:         #ff6b6b;
+  --success:        #3e8e41;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  font: 16px/1.6 'Lato', sans-serif;
+  color: var(--body-text);
+  background: var(--bg);
+}
+
+h1, h2, h3, h4, h5, h6 { margin: 0 0 12px 0; color: var(--heading); font-family: 'Bookman', Georgia, serif; }
+h1 { font: 400 34px 'Bookman'; }
+h2 { font: 300 26px 'Bookman'; margin-top: 40px; }
+h3 { font: 500 22px 'Bookman'; }
+p { margin: 0 0 16px 0; text-align: left; }
+/* text-align: left here for the same reason as on p above — the vendored
+   theme's .wrapper sets text-align: center, and every page's content sits
+   inside a .wrapper, so lists without their own reset silently inherit
+   centered text (each <li> centered on its own line) instead of the
+   normal left-aligned, hanging-indent look every other browser default
+   gives a list. */
+ul, ol { margin: 0 0 16px 0; padding-left: 24px; text-align: left; }
+li { margin-bottom: 6px; }
+a { color: var(--ink); text-decoration: none; transition: color .2s linear; }
+a:hover { color: var(--accent); }
+blockquote {
+  margin: 0 0 20px 0;
+  padding: 4px 20px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+img { max-width: 100%; height: auto; }
+figure { margin: 0 0 24px 0; }
+/* "Coming from MySQL"-style asides — a distinct visual register from a
+   blockquote's citation-italic voice, for a specific behavioral warning
+   the reader shouldn't skim past. */
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 0 0 20px 0;
+  padding: 18px 20px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  text-align: left;
+}
+.callout-icon { font-size: 18px; color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.callout p, .callout div { margin: 0; font-size: 15px; line-height: 1.65; color: var(--body-text); }
+.callout strong { color: var(--heading); }
+figure img { border-radius: 6px; border: 1px solid var(--border); }
+figcaption, figure figcaption h4 {
+  font: 400 13px 'Lato', sans-serif;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+code, pre { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+pre {
+  background: var(--code-bg);
+  color: #f8f8f2;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  /* Same root cause as the p/ul/ol resets above — the vendored theme's
+     .wrapper sets text-align: center, and every page's content sits
+     inside one, so a code block without its own reset centers each
+     line individually instead of keeping the code's actual indentation. */
+  text-align: left;
+}
+:not(pre) > code {
+  background: var(--panel-alt);
+  color: var(--ink);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+/* .wrapper is NOT redefined here on purpose — the real theme's own
+   style.css (vendored in themes/taop/static/css/style.css) already sets it
+   to max-width:1180px, and a second conflicting definition here would win
+   the cascade (loads after) and silently narrow every page back down —
+   exactly the kind of drift this theme-import was meant to eliminate. */
+
+/* ---- Header / hero ---- */
+/* Same image+position+size as .site-hero below, with background-attachment:
+   fixed on both — fixed sizes/positions the background against the
+   viewport rather than each element's own box, so the header reads as a
+   viewport onto the same continuous image the hero sits in, not a second,
+   independently-cropped copy of it. */
+.site-header {
+  background:
+    linear-gradient(160deg, rgba(55, 38, 73, 0.6), rgba(74, 54, 102, 0.8)),
+    #372649 url('/images/demo/sql_bg.jpg') center top no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.site-header .wrapper { max-width: 1180px; }
+/* Plain, technical nav: logo left, links inline after it, CTA far right —
+   one row, no dividers, no centered-logo-in-the-middle-of-the-list trick
+   (that read as decorative/marketing, not what a tool/reference site wants).
+   Horizontal padding on the row itself (the theme's own .wrapper carries
+   none) so the logo and the CTA both clear the viewport edge instead of
+   sitting flush against it below the 1180px breakpoint. */
+.site-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 18px 24px;
+}
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font: 700 15px 'JetBrains Mono', 'Fira Code', monospace;
+  letter-spacing: 0.01em;
+}
+.site-logo:before {
+  content: "\f120";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--accent);
+  font-size: 13px;
+}
+.site-logo:hover { color: var(--accent); }
+.site-logo:hover:before { color: #fff; }
+/* Wraps the link list + GitHub icon as one unit so both can collapse
+   into the same mobile panel together — on desktop this is invisible
+   (just a flex row), the split only matters once .site-nav-menu becomes
+   a toggled panel below 700px. */
+.site-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex: 1;
+  min-width: 0;
+}
+.site-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+.site-nav ul li a {
+  color: var(--muted-on-dark);
+  font: 400 14px 'Lato', sans-serif;
+}
+.site-nav ul li a:hover { color: #fff; }
+.site-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-on-dark);
+  font-size: 18px;
+}
+.site-nav-icon:hover { color: #fff; }
+/* Hamburger — three CSS-drawn bars, no icon font/image dependency. Hidden
+   on desktop; the @media block below is what actually shows it. */
+.site-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.site-nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  transition: transform .2s linear, opacity .2s linear;
+}
+/* Bars morph into an X when open — middle bar fades, top/bottom rotate
+   into place, standard hamburger-to-close affordance. */
+.site-nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.site-nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.site-nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* :link/:visited explicitly, not just the bare class — the vendored
+   theme's global `a:visited { color: var(--ink) }` (style.css) has higher
+   specificity than a plain .sticky-cta class rule (element+pseudo-class
+   beats a lone class on a specificity tie), so once this link has been
+   visited the text silently reverted to dark ink on the accent button —
+   invisible-looking text, not actually "no text". */
+.sticky-cta:link,
+.sticky-cta:visited {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 4px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+  font: 700 13px 'Lato', sans-serif;
+  white-space: nowrap;
+}
+.sticky-cta:hover,
+.sticky-cta:visited:hover { background: transparent; color: #fff; }
+
+/* Same texture taop.xyz layers behind its own dark sections (.sql_list,
+   .book_social_proof, blog banners) — #372649 base + sql_bg.jpg,
+   center/cover — with our purple gradient on top for contrast against
+   white hero text, instead of the flat gradient-only fallback. */
+.site-hero {
+  background:
+    linear-gradient(160deg, rgba(55, 38, 73, 0.6), rgba(74, 54, 102, 0.8)),
+    #372649 url('/images/demo/sql_bg.jpg') center top no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
+  padding: 100px 0 96px;
+}
+.site-hero h1 { color: #fff; margin-bottom: 16px; font-size: 40px; }
+.site-hero-desc {
+  color: var(--faint-on-dark);
+  font: 300 18px/1.6 'Lato', sans-serif;
+  max-width: 480px;
+}
+.site-hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  align-items: center;
+  text-align: left;
+}
+.site-hero-copy { text-align: left; }
+
+/* ---- Centered hero variant — every non-home section page ---- */
+.site-hero-centered { text-align: center; padding: 100px 0 72px; }
+.site-hero-centered .wrapper { display: block; max-width: 900px; text-align: center; }
+.site-hero-eyebrow {
+  font: 700 12px 'Lato', sans-serif;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 16px;
+  text-align: center;
+}
+.site-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  color: var(--accent);
+  margin: 0 auto 16px;
+}
+.site-hero-centered h1 { max-width: 720px; margin: 0 auto 12px; }
+/* text-align: center explicitly — same failure mode as the checklist
+   subtitle and home-intro paragraph fixes: this <p> only inherited
+   centering from .site-hero-centered/.wrapper above it, and the sitewide
+   `p { text-align: left }` reset directly matches the element itself,
+   which always wins over an inherited value. Was silently rendering
+   left-aligned on every non-home hero (About, Methodology, Course, FAQ). */
+.site-hero-desc-centered { max-width: 620px; margin: 0 auto; text-align: center; }
+.site-hero-centered .cp-stats-bar { margin-top: 32px; }
+
+/* ---- Login box — its own section now, not layered on the hero image, so
+   it needs to carry its own contrast rather than borrow the hero's dark
+   background. Solid dark card, centered, floating on the light page/card
+   background around it — a deliberate spotlight, not a hero overlay. ---- */
+/* Override the generic .section .content card here specifically — the
+   login box is already its own dark card; wrapping it in a second white
+   card is a card-on-card look, not a nice one.
+   Selector needs `.section.login-section` (3 classes), not just
+   `.login-section` (2) — `.section .content` further down this file also
+   has 2-class specificity and, defined later, was winning the cascade on
+   the tie and putting the white card back. */
+.section.login-section .content {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: none;
+}
+.login-box {
+  background: var(--header-bg);
+  border: 1px solid var(--header-bg);
+  border-radius: 12px;
+  padding: 36px 40px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+}
+.login-box .login-form { text-align: left; }
+/* text-align: center explicitly on both — same failure mode as every
+   other fix in this pass: these are <p> elements only inheriting center
+   from .login-box, and the sitewide `p { text-align: left }` reset
+   directly matches them, which always wins over an inherited value. */
+.login-eyebrow {
+  font: 700 11px 'Lato', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 12px;
+  text-align: center;
+}
+/* .section h2 (class+element, higher specificity than a bare class) sets
+   dark heading text sitewide — beats .login-heading alone and renders
+   invisible dark-on-dark inside this card's dark background. Scope to
+   .login-box to out-specify it. */
+.login-box .login-heading {
+  font: 500 21px 'Bookman', Georgia, serif;
+  color: #fff;
+  margin: 0 0 10px;
+}
+.login-tagline {
+  font: 300 14px/1.5 'Lato', sans-serif;
+  color: var(--faint-on-dark);
+  margin: 0 0 20px;
+  text-align: center;
+}
+.login-email-label {
+  display: block;
+  font: 700 11px 'Lato', sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.login-form input[type="email"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: 46px;
+  padding: 0 14px;
+  font: 15px 'Lato', sans-serif;
+  color: var(--ink);
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.login-submit {
+  display: block;
+  width: 100%;
+  height: 46px;
+  background: var(--heading);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font: 700 12px 'Lato', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.login-submit:hover:not(:disabled) { background: var(--gradient-end); }
+.login-submit:disabled { opacity: 0.6; cursor: default; }
+.login-status {
+  font: 13px 'Lato', sans-serif;
+  color: var(--faint-on-dark);
+  margin: 12px 0 0;
+  min-height: 18px;
+}
+
+@media (max-width: 760px) {
+  .site-hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .site-hero-copy { text-align: center; }
+  .site-hero-desc { margin: 0 auto; }
+}
+
+/* ---- Page content ---- */
+main { background: var(--bg); }
+.page { padding: 48px 20px 8px; }
+.page-lede { color: var(--muted); font-size: 18px; margin-bottom: 28px; }
+.page-content { font-size: 16px; }
+
+/* ---- Editorial page treatment (About) — narrower column, section-title
+   weight on H1s so consecutive topics read as copy-edited sections rather
+   than a markdown wall of same-weight headings; code/pre stays untouched
+   so technical content still reads as technical. ---- */
+.page-editorial .page-content { max-width: 700px; margin: 0 auto; }
+.page-editorial .page-content h1 {
+  font: 400 1.6rem/1.3 'Bookman', Georgia, serif;
+  color: var(--heading);
+  margin: 2.2em 0 0.6em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--border);
+}
+.page-editorial .page-content h1:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.page-editorial .page-content p { font-size: 16.5px; line-height: 1.75; }
+
+/* Table of contents for the 4 budget-area sections below — was a bare
+   markdown <ol> (four lines of plain text, no relation shown to the
+   headings it was actually listing). Real icon-per-area nav tiles linking
+   to each section's anchor make it read as what it is: a TOC. */
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 28px 0 8px;
+}
+.toc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 14px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  color: var(--heading);
+  font: 700 13px 'Lato', sans-serif;
+}
+.toc-card i { font-size: 22px; color: var(--accent); }
+.toc-card:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 8px 20px rgba(55,38,73,0.08); }
+.toc-card:hover i { color: var(--accent); }
+
+@media (max-width: 600px) {
+  .toc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Home intro paragraph — was plain body-copy-sized text floating with no
+   framing between the login card and the "Why migrate" card, easy to miss
+   entirely. Pull-quote treatment (larger serif-adjacent weight, centered,
+   rules top/bottom) makes it read as the page's thesis statement instead
+   of an unstyled leftover line. */
+.home-intro { padding: 8px 20px 0; }
+.home-intro .page-content {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.home-intro .page-content p {
+  font: 300 22px/1.6 'Lato', sans-serif;
+  color: var(--heading);
+  padding: 32px 0;
+  margin: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  /* Explicit, not just inherited from .page-content above — same failure
+     mode as .checklist-intro .subtitle: the sitewide `p { text-align:
+     left }` reset directly matches this <p>, and a direct match always
+     beats an inherited value regardless of either rule's specificity. */
+  text-align: center;
+}
+.home-intro .page-content p a { color: var(--accent); font-weight: 700; }
+.home-faq { padding: 24px 20px 8px; }
+.home-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 20px 0 28px;
+}
+.home-faq-item {
+  display: block;
+  padding: 16px 18px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--heading);
+  font-weight: 500;
+}
+.home-faq-item:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 4px 14px rgba(55,38,73,0.08); }
+
+.post-eyebrow { margin-bottom: 4px; }
+.post-eyebrow a {
+  font: 700 12px 'Lato', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.faq-list { padding: 8px 20px 8px; }
+.faq-card {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.faq-card:last-child { border-bottom: none; }
+.faq-card h3 { margin-bottom: 4px; font: 500 19px 'Bookman'; }
+.faq-card h3 a { color: var(--heading); }
+.faq-card h3 a:hover { color: var(--accent); }
+.faq-card-desc { color: var(--muted); margin: 0; }
+
+/* ---- CTA block ---- */
+.cta-box {
+  background: linear-gradient(160deg, var(--header-bg), var(--gradient-end));
+  color: #fff;
+  margin-top: 56px;
+  padding: 56px 0;
+  text-align: center;
+}
+.cta-box-inner { max-width: 640px; }
+.cta-title { color: #fff; }
+/* text-align: center explicitly — same failure mode as every other fix
+   in this pass: only inherited centering from .cta-box, and the sitewide
+   `p { text-align: left }` reset directly matches this <p>, which always
+   wins over an inherited value. This is the bottom CTA band every single
+   page on the site ends on, so this one was live everywhere. */
+.cta-copy { color: var(--muted-on-dark); font-size: 16px; text-align: center; }
+.cta-copy strong { color: #fff; }
+.cta-button, a.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 14px 34px;
+  min-height: 50px;
+  font: 700 13px 'Lato', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 25px;
+  background: var(--accent);
+  color: var(--heading);
+  border: 1px solid var(--accent);
+  transition: all .2s linear;
+}
+.cta-button:hover, a.cta-button:hover {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+.cta-button-inline {
+  margin-top: 8px;
+  background: transparent;
+  color: var(--heading);
+  border-color: var(--heading);
+}
+.home-faq .cta-button-inline:hover { background: var(--heading); color: #fff; }
+
+/* .footer/.about_block/.faq_block/.whatsnew_block/.copyright are NOT
+   redefined here — the real theme's style.css already styles all of them
+   (including the h6 underline bar and the mailto/github/reddit icon-swap
+   selectors on .about_block ul li a), and this site's own footer markup
+   (site-footer.html) uses those exact class names so it inherits the real
+   treatment directly instead of a hand-approximated copy.
+   One exception: the vendored .about_block rule is `padding: 0 35px 40px 0`
+   — a gutter on the right (before .footer_right_col) but none on the left,
+   so it sits flush against the wrapper's edge. Add the missing left side. */
+.about_block { padding-left: 20px; }
+
+/* ---- Marketing sections ----
+   Adapted from oss.theartofpostgresql.com's own .section/.value_props/.btn
+   pattern (themes/oss/static/css/oss.css) — same shapes and spacing, this
+   site's own palette. Used on the home page's "why migrate" grid and the
+   Methodology page's section breakdown. */
+/* Every section is a card floating on a flat, uniform page background —
+   not a full-bleed alternating band. .section-alt still exists so page
+   ordering never needs to change, but both now paint the same page bg;
+   the card itself (.content) is what gives each section its edge. */
+.section, .section-alt { padding: 48px 20px; background: var(--bg); }
+.section-icon {
+  display: block;
+  text-align: center;
+  font-size: 30px;
+  color: var(--accent);
+  margin: 0 auto 14px;
+}
+.section .content {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 44px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 6px 28px rgba(55, 38, 73, 0.07);
+  text-align: left;
+}
+.section h2, .section .subtitle, .section > .wrapper > .content > p:first-of-type {
+  text-align: center;
+}
+.section h2 {
+  font: 500 30px 'Bookman', Georgia, serif;
+  color: var(--heading);
+  margin-bottom: 10px;
+}
+.section .subtitle {
+  font: 300 18px 'Lato', sans-serif;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.section > .wrapper > .content > p { font: 16px/1.6 'Lato', sans-serif; color: var(--body-text); max-width: 680px; margin: 0 auto 16px; }
+.section > .wrapper > .content > p:not(:first-of-type) { margin-left: 0; margin-right: 0; max-width: none; }
+.section > .wrapper > .content > ul,
+.section > .wrapper > .content > ol { text-align: left; }
+
+/* Bullet/number icons for plain prose lists (FAQ posts, editorial pages,
+   methodology sections) — the vendored theme's base reset sets
+   `ul, li { list-style: none }` sitewide, on purpose, because most lists
+   here are custom component grids with their own marker (.value_prop's
+   accent checkmarks, for one). Markdown-rendered lists in body content
+   never got an equivalent, so they rendered with no marker at all —
+   restore one, using the same accent-checkmark language as .value_prop
+   rather than falling back to a plain browser disc, so a bullet reads as
+   the same icon language whether it's in a card or in running prose. */
+.page-content ul li,
+.faq-lesson-content ul li,
+.home-intro ul li,
+.section > .wrapper > .content ul li {
+  position: relative;
+  padding-left: 22px;
+}
+.page-content ul li::before,
+.faq-lesson-content ul li::before,
+.home-intro ul li::before,
+.section > .wrapper > .content ul li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--accent);
+  position: absolute;
+  left: 2px;
+  top: 3px;
+  font-size: 12px;
+}
+.page-content ol,
+.faq-lesson-content ol,
+.section > .wrapper > .content ol {
+  counter-reset: ol-counter;
+}
+.page-content ol li,
+.faq-lesson-content ol li,
+.section > .wrapper > .content ol li {
+  position: relative;
+  padding-left: 26px;
+  counter-increment: ol-counter;
+}
+.page-content ol li::before,
+.faq-lesson-content ol li::before,
+.section > .wrapper > .content ol li::before {
+  content: counter(ol-counter) ".";
+  position: absolute;
+  left: 0;
+  font: 700 14px 'Lato', sans-serif;
+  color: var(--accent);
+}
+
+.value_props {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 32px 0 8px;
+  text-align: left;
+}
+/* The 5-step method — flex+wrap+center, not grid, on purpose: a 5-item
+   grid either forces an uneven 3+1+1 (grid-auto-flow) or a stretched
+   last row, neither of which is "2 rows, 3 then 2, centered". Fixed
+   flex-basis makes each card the same width as the 3-column grid tiles
+   above it, so row two's 2 cards wrap and land centered under row one's
+   3, instead of stretching to fill the row. */
+.value_props-5 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.value_props-5 .value_prop {
+  flex: 0 1 calc((100% - 48px) / 3);
+}
+.value_prop {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.value_prop i { font-size: 26px; color: var(--accent); margin-bottom: 14px; }
+.value_prop h3 { font: 500 18px 'Bookman', Georgia, serif; color: var(--heading); margin: 0 0 6px; }
+.value_prop .subtitle { font: 300 14px 'Lato', sans-serif; color: var(--muted); margin: 0 0 10px; }
+.value_prop p, .value_prop ul { font: 14px/1.5 'Lato', sans-serif; color: var(--body-text); margin: 0; padding: 0; }
+.value_prop ul { list-style: none; }
+.value_prop ul li { padding-left: 20px; position: relative; margin-bottom: 6px; }
+.value_prop ul li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--accent);
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  top: 3px;
+}
+
+.buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.btn {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 24px;
+  font: 700 13px 'Lato', sans-serif;
+  letter-spacing: 0.04em;
+}
+/* :link/:visited on both — same a:visited specificity trap as .sticky-cta above. */
+.btn-primary:link, .btn-primary:visited { background: var(--heading); color: #fff; border: 2px solid var(--heading); }
+.btn-primary:hover { background: var(--gradient-end); border-color: var(--gradient-end); color: #fff; }
+.btn-secondary:link, .btn-secondary:visited { background: transparent; color: var(--heading); border: 2px solid var(--heading); }
+.btn-secondary:hover { background: var(--heading); color: #fff; }
+/* .btn-primary/.btn-secondary default to --heading, which reads fine on
+   every white .section .content card they normally sit on — but .cp-cta's
+   own background IS --heading (--header-bg and --heading are the same
+   #372649), so on this one dark background both buttons were rendering
+   functionally invisible: primary's fill matched the page behind it,
+   secondary's border and text did too. Swap to accent here specifically,
+   same fix already applied via .cta-button elsewhere for buttons that sit
+   on this dark gradient. */
+.cp-cta .btn-primary:link, .cp-cta .btn-primary:visited { background: var(--accent); color: var(--heading); border-color: var(--accent); }
+.cp-cta .btn-primary:hover { background: transparent; color: #fff; border-color: #fff; }
+.cp-cta .btn-secondary:link, .cp-cta .btn-secondary:visited { background: transparent; color: #fff; border-color: #fff; }
+.cp-cta .btn-secondary:hover { background: #fff; color: var(--heading); }
+
+/* ---- Pricing table (sponsorship page) ---- */
+.pricing-table { width: 100%; border-collapse: collapse; margin: 32px 0; text-align: left; font: 14px 'Lato', sans-serif; }
+.pricing-table th, .pricing-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.pricing-table th { font: 700 12px 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.pricing-table td.price { font: 700 15px 'Lato', sans-serif; color: var(--heading); white-space: nowrap; }
+.pricing-table tr:last-child td { border-bottom: none; }
+
+@media (max-width: 760px) {
+  .value_props { grid-template-columns: 1fr; }
+  .value_props-5 .value_prop { flex-basis: 100%; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .pricing-table { display: block; overflow-x: auto; }
+}
+
+/* 860px, not 700px — 6 links + the GitHub icon + the CTA button need more
+   room than that to sit on one row without wrapping/crowding; this is
+   where they'd first start cramming, so it's where the toggle takes over. */
+@media (max-width: 860px) {
+  /* .site-nav-menu carries flex:1 on desktop to push the CTA right; once
+     it's display:none here that spacer disappears, so the toggle needs
+     its own margin-left:auto to keep the CTA pinned to the row's end
+     instead of butting up against it right after the logo. */
+  .site-nav-toggle { display: flex; margin-left: auto; }
+  .site-nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    background: var(--header-bg);
+    padding: 8px 24px 20px;
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28);
+    z-index: 20;
+  }
+  .site-nav-menu.is-open { display: flex; }
+  .site-nav-menu ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+  }
+  .site-nav-menu ul li { width: 100%; }
+  .site-nav-menu ul li a { display: block; padding: 12px 0; font-size: 16px; }
+  .site-nav-icon { padding: 12px 0; }
+}
+
+@media (max-width: 700px) {
+  .site-hero { padding: 40px 0 44px; }
+  h1 { font-size: 28px; }
+}
+
+/* Smallest phones (iPhone SE-class, ~375px and under) — the CTA's full
+   label plus price stops fitting next to the logo + hamburger; drop to
+   just the price so the row still fits one line instead of wrapping. */
+@media (max-width: 400px) {
+  .site-logo { font-size: 13px; }
+  .sticky-cta .sticky-cta-label { display: none; }
+}
+
+/* ==========================================================================
+   Course page — adapted from theartofpostgresql.com's own .cp-* system
+   (layouts/partials/course/toc-styles.html), same structure and spacing,
+   this site's palette tokens instead of hardcoded taop.xyz hex values.
+   ========================================================================== */
+.cp-stats-bar { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; max-width: 680px; margin: 0 auto; padding: 0 24px; }
+.cp-stat { display: flex; flex-direction: column; align-items: center; padding: 0 28px; border-right: 1px solid rgba(255,255,255,0.2); }
+.cp-stat:last-child { border-right: none; }
+.cp-stat-n { font: 700 2rem/1 'Lato', sans-serif; color: var(--accent); letter-spacing: -0.02em; }
+.cp-stat-l { font: 300 0.78rem/1.4 'Lato', sans-serif; color: var(--faint-on-dark); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px; white-space: nowrap; }
+
+.cp-part-nav { background: var(--panel-alt); padding: 32px 0 36px; border-bottom: 1px solid var(--border); }
+.cp-part-nav-inner { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+.cp-part-nav-title { font: 300 1.3rem/1.2 'Bookman', Georgia, serif; color: var(--heading); margin: 0 0 20px; }
+.cp-part-table { width: 100%; border-collapse: collapse; }
+.cp-part-table thead tr { border-top: 2px solid var(--body-text); border-bottom: 1px solid var(--body-text); }
+.cp-part-table tbody tr:last-child { border-bottom: 2px solid var(--body-text); }
+.cp-part-table tbody tr { border-bottom: 1px solid var(--border); }
+.cp-part-table th { font: 400 0.72rem/1 'Lato', sans-serif; color: var(--body-text); text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 16px 8px 0; text-align: left; }
+.cp-part-table td { padding: 9px 16px 9px 0; vertical-align: baseline; }
+.cp-part-table .col-part { width: 80px; white-space: nowrap; font: 400 0.82rem/1 'Lato', sans-serif; color: var(--accent); vertical-align: top; padding-top: 11px; }
+.cp-part-table .col-part a { font: inherit; color: inherit; text-decoration: none; display: block; }
+.cp-part-table .col-part .cp-tier-pill { display: block; margin-top: 6px; }
+.cp-part-table .col-title { width: 260px; }
+.cp-part-table .col-title a { font: 700 0.92rem/1 'Lato', sans-serif; color: var(--heading); text-decoration: none; }
+.cp-part-table .col-part a:hover, .cp-part-table .col-title a:hover { color: var(--accent); }
+.cp-part-table .col-hook { font: 300 0.85rem/1.4 'Lato', sans-serif; color: var(--body-text); }
+
+.cp-tier-pill { display: inline-block; font: 700 0.6rem/1 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 2px; vertical-align: middle; }
+.cp-tier-pill.core { background: rgba(96,178,211,0.12); color: #3a8aad; border: 1px solid rgba(96,178,211,0.3); }
+.cp-tier-pill.advanced { background: rgba(139,111,176,0.1); color: #7050a8; border: 1px solid rgba(139,111,176,0.28); }
+
+.cp-modules { }
+.cp-part { padding: 56px 0 48px; border-bottom: 1px solid var(--border); }
+.cp-modules .cp-part:nth-child(odd) { background: var(--panel-bg); }
+.cp-modules .cp-part:nth-child(even) { background: var(--panel-alt); }
+.cp-part .wrapper { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+.cp-part-head { margin-bottom: 20px; }
+.cp-part-badge { display: inline-flex; align-items: center; gap: 8px; font: 400 0.82rem/1 'Lato', sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--accent); border-radius: 3px; padding: 7px 16px; margin-bottom: 16px; }
+.cp-part.tier-advanced .cp-part-badge { color: #7050a8; border-color: #8b6fb0; }
+.cp-part-head h2 { font: 400 1.7rem/1.2 'Bookman', Georgia, serif; color: var(--heading); margin: 0 0 8px; }
+/* text-align: center explicitly — same failure mode as every other fix in
+   this pass: .cp-part-head has no text-align of its own, so its children
+   only inherit center from the theme's .wrapper. .cp-part-badge (a div)
+   and the h2 above aren't <p>s so that inheritance reaches them fine, but
+   this IS a <p>, and the sitewide `p { text-align: left }` reset directly
+   matches it — which always wins over an inherited value regardless of
+   specificity. Left this one flush against the wrapper's left edge, right
+   under a centered heading, on every one of the course page's 11 modules. */
+.cp-part-meta { font: 300 0.85rem/1 'Lato', sans-serif; color: var(--body-text); text-align: center; }
+.cp-part-desc { font: 400 15px/1.65 'Lato', sans-serif; color: var(--body-text); margin: 10px auto 0; max-width: 640px; text-align: left; }
+
+.cp-part-body { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+.cp-part-body > * { min-width: 0; }
+.cp-chapters { display: flex; flex-direction: column; gap: 0; text-align: left; min-width: 0; }
+.cp-chapter { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--panel-alt); align-items: baseline; min-width: 0; }
+.cp-chapter > div { min-width: 0; flex: 1; }
+.cp-chapter:last-child { border-bottom: none; }
+.cp-ch-num { font: 400 0.72rem/1 'Lato', sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; width: 42px; padding-top: 3px; }
+.cp-ch-title { font: 700 0.92rem/1.3 'Lato', sans-serif; color: var(--heading); }
+.cp-ch-topics { display: block; font: 400 0.8rem/1.45 'Lato', sans-serif; color: var(--body-text); margin-top: 3px; }
+
+.cp-showcase { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 24px; }
+.cp-query-card { background: #2a1f36; border-radius: 8px; overflow: hidden; max-width: 100%; min-width: 0; }
+.cp-query-label { font: 400 0.72rem/1 'Lato', sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 18px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.cp-query-card pre { margin: 0; padding: 14px 18px; overflow-x: auto; background: transparent; border: none; border-radius: 0; text-align: left; }
+.cp-query-card pre code { font: 400 0.75rem/1.55 'JetBrains Mono', 'Fira Code', monospace; color: #c8b8e0; background: none; padding: 0; }
+.cp-query-caption { font: 300 0.8rem/1.5 'Lato', sans-serif; color: rgba(255,255,255,0.5); padding: 10px 18px 14px; border-top: 1px solid rgba(255,255,255,0.08); margin: 0; }
+
+.cp-cta { background: var(--header-bg); padding: 64px 0; text-align: center; }
+.cp-cta h2 { font: 400 1.7rem/1.2 'Bookman', Georgia, serif; color: #fff; margin: 0 0 16px; }
+/* text-align: center explicitly on all three — same failure mode as every
+   other fix in this pass: all three are <p>s only inheriting center from
+   .cp-cta, and the sitewide `p { text-align: left }` reset directly
+   matches each of them, which always wins over an inherited value. This
+   was the course page's main sign-in/purchase description text, its
+   price line, and its "modules 1-4 free" eyebrow — all silently
+   left-aligned under a centered h2. */
+.cp-cta p { font: 300 1rem/1.6 'Lato', sans-serif; color: var(--faint-on-dark); max-width: 540px; margin: 0 auto 28px; text-align: center; }
+.product-card { max-width: 560px; margin: 0 auto; }
+.product-eyebrow { font: 700 12px 'Lato', sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 14px; text-align: center; }
+.product-price { font: 700 2rem 'Lato', sans-serif; color: #fff; margin: -8px 0 24px; text-align: center; }
+.product-price span { font: 300 0.95rem 'Lato', sans-serif; color: var(--faint-on-dark); margin-left: 6px; }
+/* .cp-cta p (element+class) otherwise beats a bare .product-note class on
+   specificity — qualify with .cp-cta p.product-note instead of !important. */
+.cp-cta p.product-note { margin-top: 20px; font-size: 0.85rem; }
+.product-note a { color: var(--accent); font-weight: 700; }
+
+@media (max-width: 960px) {
+  .cp-part-body { grid-template-columns: 1fr; }
+  .cp-showcase { position: static; }
+}
+@media (max-width: 640px) {
+  .cp-hero { padding: 56px 0 32px; }
+  .cp-hero h1 { font-size: 1.7rem; }
+  .cp-stat { padding: 0 16px; }
+  .cp-stat-n { font-size: 1.4rem; }
+  .cp-part { padding: 40px 0 32px; }
+}
+
+/* ==========================================================================
+   FAQ hub + lesson — adapted from theartofpostgresql.com/yesql/'s own
+   system (static/css/yesql.css), same structure, this site's palette.
+   ========================================================================== */
+.faq-hub .wrapper, .faq-lesson .wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.checklist-intro { text-align: center; padding: 48px 0 0; }
+.checklist-intro h2 { font: 500 30px 'Bookman', Georgia, serif; color: var(--heading); margin-bottom: 10px; }
+/* text-align: center explicitly, not just inherited from .checklist-intro
+   above — the sitewide `p { text-align: left }` reset (added earlier to
+   stop paragraphs inheriting the theme's centered .wrapper) directly
+   targets this <p>, and a rule that directly matches an element always
+   wins over an inherited value regardless of specificity. Same failure
+   mode as the .site-header background-red bug from earlier in this
+   project: a later, broader rule silently overriding an intended one. */
+.checklist-intro .subtitle { font: 300 18px 'Lato', sans-serif; color: var(--muted); margin: 0; text-align: center; }
+
+/* Documentation-style annotated list — one group per category, each item
+   carrying its own icon (from the post's own front matter, not just the
+   category's) plus a one-line comment styled like a real code comment,
+   so the list reads as documentation of what to watch for rather than a
+   bare table of contents (that's what the card grid below is for). */
+.checklist-doc { max-width: 760px; margin: 40px auto 0; text-align: left; }
+.checklist-doc-group { margin-bottom: 32px; }
+.checklist-doc-group:last-child { margin-bottom: 0; }
+.checklist-doc-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 15px 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.checklist-doc-group h3 i { font-size: 14px; }
+.checklist-doc-list { list-style: none; margin: 0; padding: 0; }
+.checklist-doc-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.checklist-doc-list li:last-child { border-bottom: none; }
+.checklist-doc-list li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--heading);
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+}
+.checklist-doc-list li a:hover { color: var(--accent); }
+.checklist-doc-list li a i { font-size: 13px; color: var(--accent); width: 16px; text-align: center; }
+.checklist-doc-comment {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12.5px;
+  color: var(--muted);
+  flex: 1;
+  min-width: 0;
+}
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 32px 0 8px;
+}
+.checklist-card {
+  padding: 28px 24px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: left;
+}
+.checklist-icon { display: block; font-size: 24px; color: var(--accent); margin-bottom: 12px; }
+.checklist-card h3 { font: 500 17px 'Bookman', Georgia, serif; color: var(--heading); margin: 0 0 12px; }
+.checklist-card ul { margin: 0; padding: 0; }
+.checklist-card ul li { padding-left: 0; margin-bottom: 8px; font-size: 14px; }
+.checklist-card ul li a { color: var(--body-text); font-weight: 500; }
+.checklist-card ul li a:hover { color: var(--accent); }
+.faq-hub-all-title {
+  text-align: center;
+  font: 400 22px 'Bookman', Georgia, serif;
+  color: var(--heading);
+  margin: 48px 0 0;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+  padding: 40px 0 64px;
+}
+.faq-card {
+  display: block;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px;
+}
+.faq-card:hover { border-color: var(--accent); box-shadow: 0 14px 32px rgba(55,38,73,0.1); color: inherit; }
+.faq-card i { font-size: 1.5rem; color: var(--accent); margin-bottom: 12px; display: block; }
+.faq-card h3 { color: var(--heading); font: 700 1.05rem/1.3 'Lato', sans-serif; margin: 0 0 8px; }
+.faq-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.5; margin: 0; }
+
+.faq-lesson .wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 44px;
+  align-items: start;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.faq-lesson-content { min-width: 0; }
+.faq-breadcrumb { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
+.faq-breadcrumb a { color: var(--accent); font-weight: 700; }
+.faq-lesson-content h1 { font: 400 2rem/1.25 'Bookman', Georgia, serif; color: var(--heading); margin: 0 0 12px; }
+.faq-lede { font: 300 1.1rem/1.55 'Lato', sans-serif; color: var(--muted); margin: 0 0 28px; }
+.faq-sidebar { position: sticky; top: 100px; }
+.faq-sidebar-block { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+.faq-sidebar-block h6 { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; color: var(--accent); margin: 0 0 12px; }
+.faq-sidebar-block ul { list-style: none; margin: 0; padding: 0; }
+.faq-sidebar-block li { margin: 0 0 8px; line-height: 1.4; font-size: 0.92rem; }
+.faq-sidebar-cta {
+  background: linear-gradient(160deg, var(--header-bg), var(--gradient-end));
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  padding: 22px 18px 20px;
+}
+.faq-sidebar-cta i { font-size: 1.5rem; color: var(--accent); display: block; margin-bottom: 8px; }
+.faq-sidebar-cta h6 { color: #fff; margin: 0 0 8px; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.06em; }
+/* text-align: center explicitly — same failure mode as every other fix in
+   this pass: only inherited centering from .faq-sidebar-cta, and the
+   sitewide `p { text-align: left }` reset directly matches this <p>. */
+.faq-sidebar-cta p { color: var(--faint-on-dark); font-size: 0.85rem; margin: 0 0 14px; line-height: 1.45; text-align: center; }
+.faq-sidebar-cta a.btn { display: block; width: 100%; box-sizing: border-box; }
+
+@media (max-width: 860px) {
+  .faq-lesson .wrapper { grid-template-columns: 1fr; }
+  .faq-sidebar { position: static; }
+}
+
+/* ===========================================================================
+   REDESIGN LAYER — ported from pgloader.io's five-phase rework
+   ===========================================================================
+
+   Same methodology, same palette, deliberately not the same fonts: this
+   site keeps Bookman/Lato because it funnels into theartofpostgresql.com
+   and the family tie is the point (see the note at the top of this file),
+   where pgloader.io is its own product with its own Fraunces/Plex voice.
+   Bookman plays Fraunces's role (characterful display serif), Lato plays
+   Plex Sans's, and everything else — the palette, the full-bleed section
+   alternation, the type scale, the one-gold-CTA rule, the quiet list
+   patterns that replaced the card grid — is the same system.
+
+   This block sits last on purpose. Everything above it is the previous
+   design; rather than rewrite it in place (and risk missing one of the
+   many `.section h2` / `.section .content > p` rules that would then
+   silently win), each override here matches or exceeds the specificity
+   of what it replaces. That specificity trap cost pgloader.io five
+   separate follow-up fixes, so it is handled up front here. */
+
+:root {
+  /* Warmed paper, and the sky-tinted alternate band. The old --bg was a
+     flat neutral #f9f9f9 that read as "unstyled default" beside the plum
+     hero; --paper carries a touch of the same warmth as the ink. */
+  --paper:       #f8f6f4;
+  --paper-2:     #e6ecf0;
+  --ink:         #1c1224;
+  --ink-soft:    #4a3b53;
+  --rule:        #ddd3da;
+  --plum:        #372649;
+  --plum-deep:   #241830;
+  --sky:         #2f7fa3;
+  --sky-soft:    #60b2d3;
+  /* Gold is reserved: the single primary action per page, plus step
+     numbers. Never a section background, never a body-text color. */
+  --gold:        #93690e;
+  --gold-soft:   #c9a227;
+  --gold-bright: #e8c568;
+
+  /* Re-point the pre-existing tokens at the new system so every rule
+     above this block inherits the palette change without being edited. */
+  --bg:          #f8f6f4;
+  --border:      #ddd3da;
+  --body-text:   #4a3b53;
+}
+body { background: var(--paper); color: var(--ink-soft); }
+
+/* ---- Phase 1: full-bleed alternating bands, not floating cards.
+   Every section was a white rounded card on a flat page — which gives
+   the page one rhythm (card, gap, card) and no way to say "this section
+   is a different kind of thing from the last one". Alternating the band
+   itself does that for free, and removing the card wrapper lets content
+   use the full measure. */
+.section, .section-alt { background: var(--paper); padding: 64px 20px; }
+.section.section-alt, .section-alt { background: var(--paper-2); }
+.section .content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: left;
+}
+/* The old rules centered h2, .subtitle and the first paragraph of every
+   section. Centered headings over left-aligned body copy gave each
+   section two competing axes; one left edge down the whole page reads
+   as deliberate. */
+.section h2,
+.section .subtitle,
+.section > .wrapper > .content > p:first-of-type,
+.section > .wrapper > .content > p { text-align: left; }
+.section > .wrapper > .content > p { max-width: 720px; margin: 0 0 16px; }
+.section .buttons { justify-content: flex-start; }
+
+/* ---- Phase 2: an explicit type scale. Every section h2 was the same
+   size whether it carried the page's central claim or a footnote.
+   .h-lead promotes the one section per page that is the claim. */
+.section .content h2 { font: 500 30px/1.25 'Bookman', Georgia, serif; color: var(--plum); margin: 0 0 10px; }
+.section .content h2.h-lead { font-size: 42px; line-height: 1.1; }
+.section .content .subtitle { font: 300 18px/1.5 'Lato', sans-serif; color: var(--ink-soft); margin: 0 0 24px; }
+
+/* ---- The section icon belongs on the heading's line. As a block above
+   it, it read as an orphaned bullet with no obvious owner and cost a
+   line of vertical rhythm at every section boundary. Flex (not an
+   inline-block) keeps the badge centred against a heading that wraps. */
+.section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(47, 127, 163, .1);
+  color: var(--sky);
+  font-size: 19px;
+  flex: 0 0 auto;
+  margin: 0 16px 0 0;
+}
+.section .content h2:has(> .section-icon) { display: flex; align-items: center; }
+.section .content h2.h-lead > .section-icon { width: 56px; height: 56px; font-size: 23px; }
+/* The section-page hero icon was `display: flex; margin: 0 auto` with no
+   width — a full-bleed flex row, invisible until the redesign gave it a
+   background, at which point it painted as a bar across the hero. Give
+   it the same badge geometry as the in-heading icon so the two read as
+   one vocabulary. */
+.site-hero .section-icon,
+.site-hero-icon {
+  display: inline-flex;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 24px;
+  background: rgba(255, 255, 255, .12);
+  color: var(--gold-bright);
+  margin: 0 auto 18px;
+}
+
+/* ---- Phase 3: spend the gold accent on purpose. One rule — gold is the
+   fill for the single primary action per page. Everywhere else it stays
+   reserved (step numbers), so it still reads as an accent rather than
+   wallpaper. Plum-deep on gold holds AA contrast on the paper bands and
+   inside the dark hero alike, so the primary button reads as "the one
+   thing to click" wherever it lands. */
+.btn-primary:link, .btn-primary:visited {
+  background: var(--gold-soft);
+  color: var(--plum-deep);
+  border: 2px solid var(--gold-soft);
+  font-weight: 700;
+}
+.btn-primary:hover { background: var(--gold-bright); border-color: var(--gold-bright); color: var(--plum-deep); }
+.btn-secondary:link, .btn-secondary:visited { background: transparent; color: var(--plum); border: 2px solid var(--rule); }
+.btn-secondary:hover { background: var(--plum); border-color: var(--plum); color: #fff; }
+/* :link/:visited on both, matching the existing rules' specificity —
+   a bare .sticky-cta loses to the theme's own a:visited. */
+.sticky-cta:link, .sticky-cta:visited {
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+  color: var(--plum-deep);
+}
+.sticky-cta:hover, .sticky-cta:visited:hover {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, .6);
+}
+/* The dark CTA band inherits the same rule rather than its own sky fill,
+   so there is exactly one primary-button appearance sitewide. */
+.cp-cta .btn-primary:link, .cp-cta .btn-primary:visited { background: var(--gold-soft); color: var(--plum-deep); border-color: var(--gold-soft); }
+.cp-cta .btn-primary:hover { background: var(--gold-bright); border-color: var(--gold-bright); color: var(--plum-deep); }
+
+/* ---- Phase 5: the nav had never been touched by any of this. A gold
+   underline on hover ties every clickable nav item back to the same
+   "gold means act on this" rule Phase 3 set for buttons. */
+.site-nav ul li a {
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color .15s ease, color .2s linear;
+}
+.site-nav ul li a:hover { border-color: var(--gold-soft); }
+
+/* An outbound link should say so before it's clicked — this site sends
+   readers to pgloader's repo, oss.theartofpostgresql.com and the course
+   platform, and a reader who doesn't expect to leave loses their place. */
+.section a[target="_blank"]:not(.btn):not(.cta-button)::after,
+.page-content a[target="_blank"]:not(.btn):not(.cta-button)::after { content: "\00A0\2197"; font-size: .85em; }
+
+/* ===========================================================================
+   Quiet patterns — the alternative to raising every block to a card.
+   Same set as pgloader.io: not everything on a page is equally
+   important, and a grid of identical raised cards says the opposite.
+   Each pattern below encodes what its content actually is. */
+
+/* A real sequence: ordered, each step's output feeding the next. */
+.steps-linear {
+  display: flex;
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+.steps-linear li {
+  flex: 1;
+  padding: 20px 22px 4px;
+  border-left: 1px solid var(--rule);
+  text-align: left;
+  margin: 0;
+}
+.steps-linear li:first-child { border-left: none; padding-left: 4px; }
+.steps-linear li::before { content: none; }
+.steps-linear .step-n {
+  display: block;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.steps-linear h3 { font: 500 16px 'Bookman', Georgia, serif; margin: 0 0 8px; }
+.section .steps-linear p { font: 13.5px/1.55 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
+@media (max-width: 860px) {
+  .steps-linear { flex-direction: column; border-top: none; }
+  .steps-linear li { border-left: none; border-top: 1px solid var(--rule); padding: 20px 4px 4px; }
+  .steps-linear li:first-child { border-top: none; padding-top: 4px; }
+}
+
+/* A categorized breakdown — reasons, cost drivers. Not a sequence (order
+   doesn't matter) and not a choice (they all apply at once), so no
+   numbering and no cards: a plain divided list, icon beside each row. */
+.list-divided { border-top: 1px solid var(--rule); margin-top: 26px; }
+.list-divided-item {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 20px 4px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.list-divided-item i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--sky);
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(47, 127, 163, .1);
+  margin-top: 2px;
+}
+.list-divided-item h3 { font: 500 16px 'Bookman', Georgia, serif; margin: 0 0 5px; }
+.section .list-divided-item p { font: 14px/1.55 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
+
+/* Plain facts — credentials, definitions. Term/definition, not a grid of
+   cards competing with the content above them. */
+.definition-list { border-top: 1px solid var(--rule); margin-top: 26px; }
+.dl-row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 24px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.dl-row dt { font: 500 16px 'Bookman', Georgia, serif; color: var(--ink); margin: 0; }
+.dl-row dd { margin: 0; color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; }
+@media (max-width: 640px) { .dl-row { grid-template-columns: 1fr; gap: 4px; } }
+
+/* Proof, not the page's main point — de-emphasized on purpose. */
+.quotes-plain { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 26px; }
+.quotes-plain blockquote {
+  margin: 0;
+  padding: 4px 26px;
+  border-left: 1px solid var(--rule);
+  border-right: none;
+  text-align: left;
+}
+.quotes-plain blockquote:first-child { border-left: none; padding-left: 4px; }
+.section .quotes-plain p {
+  font: italic 500 16px/1.5 'Bookman', Georgia, serif;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+.section .quotes-plain cite {
+  font: 400 12.5px 'JetBrains Mono', 'Fira Code', monospace;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+@media (max-width: 760px) {
+  .quotes-plain { grid-template-columns: 1fr; }
+  .quotes-plain blockquote { border-left: none; border-top: 1px solid var(--rule); padding: 18px 4px; }
+  .quotes-plain blockquote:first-child { border-top: none; }
+}
+
+/* One line of proof, placed right under a hero: every claim below it is
+   conditional on the reader believing this is real and used in anger. */
+.section .proof-line {
+  font: italic 500 20px/1.5 'Bookman', Georgia, serif;
+  text-align: center;
+  color: var(--ink);
+  max-width: 760px;
+  margin: 0 auto;
+}
+.section .proof-line cite {
+  display: block;
+  font: 400 13px 'JetBrains Mono', 'Fira Code', monospace;
+  font-style: normal;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+/* Simultaneous line items weighed against each other — a 2x2 grid, so
+   they can be compared side by side. Fixed at two columns rather than
+   auto-fit: a 4-across strip would leave each paragraph too narrow. */
+.section .cost-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 26px;
+  text-align: left;
+}
+.section .cost-card {
+  background: #fffdfb;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 24px 24px 26px;
+}
+.section .cost-card i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(47, 127, 163, .1);
+  color: var(--sky);
+  font-size: 17px;
+  margin-bottom: 14px;
+}
+.section .cost-card h3 { font: 500 19px 'Bookman', Georgia, serif; color: var(--plum); margin: 0 0 8px; }
+.section .cost-card p { font: 14.5px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
+@media (max-width: 720px) { .section .cost-grid { grid-template-columns: 1fr; } }
+
+/* Tier cards: name, price, who it's for, one concrete benefit, one CTA.
+   A scannable card per tier converts where a dense comparison table
+   doesn't — which is what the pricing table here used to be. */
+.section .tier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 32px;
+}
+.section .tier-card {
+  background: #fffdfb;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 26px 22px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.section .tier-card h3 { font: 500 20px 'Bookman', Georgia, serif; color: var(--plum); margin: 0; }
+.section .tier-price { font: 500 28px 'Bookman', Georgia, serif; color: var(--plum); margin: 0; }
+.section .tier-price span { font: 400 14px 'Lato', sans-serif; color: var(--ink-soft); }
+.section .tier-for { font: 400 14px/1.5 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
+.section .tier-benefit { font: 400 14px/1.55 'Lato', sans-serif; color: var(--ink); margin: 0 0 4px; }
+.section .tier-card .btn { margin-top: auto; align-self: flex-start; }
+/* One tier carries a border and a badge — the recommended default. A
+   page where every option looks equally weighted makes the reader do
+   the ranking, and most won't. */
+.section .tier-recommended { border: 2px solid var(--gold-soft); }
+.section .tier-badge {
+  position: absolute;
+  top: -11px;
+  left: 22px;
+  background: var(--gold-soft);
+  color: var(--plum-deep);
+  font: 700 11px 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin: 0;
+}
+.section .tier-note { font: 400 13.5px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin-top: 22px; }
+@media (max-width: 900px) { .section .tier-cards { grid-template-columns: 1fr; } }
+
+/* The value_prop card survives where the content genuinely is a set of
+   parallel choices — but its icon gets the same soft-badge treatment as
+   everything else, in the plum family since it sits inside a card
+   rather than heading a section. */
+.value_prop { background: #fffdfb; border-color: var(--rule); border-radius: 12px; }
+.value_prop i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(55, 38, 73, .08);
+  color: var(--sky);
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* ---- Corrections the layer above makes necessary. Its `.section .content
+   h2` rule (0,2,1) outranks the component-level `.login-box .login-heading`
+   (0,2,0) and repaints that heading plum — on a plum card, i.e. invisible.
+   Same class of bug the header comment warns about, caught here rather
+   than left for someone to find in a browser. */
+.section .content .login-box .login-heading { color: #fff; }
+.section .content .login-box .login-eyebrow { color: var(--gold-bright); }
+.section .content .login-box .login-tagline,
+.section .content .login-box .login-status { color: var(--muted-on-dark); }
+.login-submit { background: var(--gold-soft); color: var(--plum-deep); }
+.login-submit:hover:not(:disabled) { background: var(--gold-bright); color: var(--plum-deep); }
+/* The white-paper box is the whole point of its section — centre it, and
+   let it stop short of the full 900px measure so it reads as an object
+   on the band rather than another full-width block. */
+.section.login-section .content { max-width: 520px; }
+.section.login-section { padding: 56px 20px; }
+
+/* The home lede sat centred while every section below it now starts at
+   one left edge; two axes on one page reads as an accident. */
+.home-intro .page-content p { text-align: left; margin-left: 0; margin-right: 0; }
+.home-intro .page-content { max-width: 720px; margin: 0 auto; }
+
+/* Hero: the eyebrow/stats/buttons added to the homepage need the dark
+   treatment the section pages' hero already had. */
+.site-hero-buttons { justify-content: center; margin-top: 26px; }
+.site-hero .cp-stats-bar { margin-top: 30px; }
+.site-hero-eyebrow { color: var(--gold-bright); }
+.site-hero .cp-stat-n { color: var(--gold-bright); }
+
+/* The FAQ teaser tiles and the methodology TOC are navigation, not
+   content — keep them quiet, and let the gold hover say "clickable"
+   with the same vocabulary as the nav and the buttons. */
+.home-faq-item, .toc-card { background: #fffdfb; border-color: var(--rule); border-radius: 10px; }
+.home-faq-item:hover, .toc-card:hover { border-color: var(--gold-soft); color: var(--plum); box-shadow: none; }
+.toc-card:hover i { color: var(--gold); }
+
+/* .btn-secondary is plum-on-transparent, which is correct on the paper
+   bands and invisible on the plum hero. Scope the dark variant rather
+   than weakening the light one. */
+.site-hero .btn-secondary:link, .site-hero .btn-secondary:visited,
+.cta-box .btn-secondary:link, .cta-box .btn-secondary:visited {
+  color: #fff;
+  border-color: rgba(255, 255, 255, .5);
+}
+.site-hero .btn-secondary:hover,
+.cta-box .btn-secondary:hover { background: #fff; color: var(--plum); border-color: #fff; }
+
+/* ---- One left edge, everywhere. Phase 1 fixed the marketing sections;
+   these are the remaining pages (FAQ hub, editorial About) whose headings
+   were still centred over left-aligned body copy. Each needs its own rule
+   because each set text-align on the element itself — an inherited value
+   would have been enough, but a direct match never loses to one. */
+.checklist-intro { text-align: left; }
+.checklist-intro h2,
+.checklist-intro .subtitle { text-align: left; }
+.checklist-intro,
+.checklist-doc { max-width: 900px; margin-left: auto; margin-right: auto; }
+.faq-hub-all-title { text-align: left; }
+.page-editorial .page-content h1 { text-align: left; }
+.page-editorial .page-content { max-width: 760px; }
+
+/* Sectioning inside the editorial pages: the h1s used as section titles
+   had a hairline above them and nothing else. Give them the same badge-
+   free type scale the .section h2s use, so About and Methodology read as
+   one system rather than two. */
+.page-editorial .page-content h1 { font: 500 30px/1.25 'Bookman', Georgia, serif; color: var(--plum); }
+
+/* The FAQ hub's group headings and the checklist's inline comments carry
+   the sky accent; keep them, but pull the comment text back to the body
+   colour — sky-on-paper at 12px was the lowest-contrast text on the site. */
+.checklist-doc-group h3 { color: var(--sky); }
+.checklist-doc-comment { color: var(--ink-soft); }
+
+/* The sitewide prose-list rule (`.section > .wrapper > .content ol li::before`,
+   which restores a numeral to markdown-rendered ordered lists) also matched
+   .steps-linear, so every step rendered "1. 01 Target architecture" — the
+   component's own numbering plus the prose fallback. Suppressed at matching
+   specificity; a bare `.steps-linear li::before` loses. */
+.section > .wrapper > .content ol.steps-linear li::before { content: none; }
+.section > .wrapper > .content ol.steps-linear li { padding-left: 22px; }
+.section > .wrapper > .content ol.steps-linear li:first-child { padding-left: 4px; }
+
+/* Sections hosting a 5-across strip or a 3-across card grid need more than
+   the 900px reading measure. Widened here rather than per component, since
+   the prose inside still caps itself at 720px — the measure that matters
+   for reading is set on the paragraph, not on the band. */
+.section .content { max-width: 1040px; }
+
+@media (max-width: 640px) {
+  /* The stats bar wrapped 2 + 1, leaving a divider hanging off the end of
+     the first row. Three narrow columns hold at 390px and keep the row
+     reading as one object. */
+  .site-hero .cp-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; padding: 0 8px; }
+  .site-hero .cp-stat { padding: 0 8px; }
+  .site-hero .cp-stat-n { font-size: 1.5rem; }
+  .site-hero .cp-stat-l { font-size: .66rem; white-space: normal; text-align: center; }
+  /* The 46px badge is a third of the line height at mobile heading sizes;
+     scale it with the type rather than letting it dominate. */
+  .section .content h2 > .section-icon { width: 38px; height: 38px; font-size: 16px; margin-right: 12px; }
+  .section .content h2.h-lead > .section-icon { width: 42px; height: 42px; font-size: 18px; }
+  .section .content h2 { font-size: 25px; }
+  .section .content h2.h-lead { font-size: 32px; }
+  .site-hero-buttons { flex-direction: column; align-items: stretch; }
+  .section, .section-alt { padding: 44px 20px; }
+}

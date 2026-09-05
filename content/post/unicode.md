@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 1
+icon: "fa-solid fa-language"
 title: "UTF-8 all the way through"
 description: "PostgreSQL speaks Unicode real well."
 ---

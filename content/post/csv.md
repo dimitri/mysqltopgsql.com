@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 9
+icon: "fa-solid fa-file-csv"
 title: "How to output MySQL query results in CSV format?"
 description: "PostgreSQL COPY and psql output formats."
 ---

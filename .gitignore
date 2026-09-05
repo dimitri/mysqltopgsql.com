@@ -1,0 +1,14 @@
+# Hugo build output — once GitHub Pages is switched to the Actions deploy
+# source (.github/workflows/deploy.yml), this stops being committed and
+# should be untracked with `git rm -r --cached docs/` in that same change.
+# Left tracked for now: Pages currently serves this repo's docs/ directly
+# from the branch, and untracking it here would blank the live site before
+# the Actions-based deploy is actually wired up on the GitHub side.
+# /docs/
+
+# Hugo caches / locks
+/resources/
+/.hugo_build.lock
+
+# OS cruft
+.DS_Store

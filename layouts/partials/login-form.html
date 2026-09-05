@@ -1,0 +1,76 @@
+<!--
+  Hosts its own form and calls TAOP's real /auth/magic-link API directly —
+  NOT a link out to theartofpostgresql.com/login. This only works because
+  app.taop.xyz added TrustedExternalOrigins support server-side (see that
+  repo's internal/config/config.go and internal/handlers/auth.go): the
+  endpoint's CSRF protection is a same-site double-submit cookie that can
+  never reach this domain's browser context, so the backend now checks the
+  request's Origin header against an allowlist instead, for this domain
+  specifically, and answers with real CORS headers.
+
+  theartofpostgresql.com's OWN marketing site tried the naive version of
+  this once already (a static page fetching the API with mode:"no-cors")
+  and abandoned it — that mode makes the response unreadable, so the page
+  showed a fake "check your inbox" screen whether or not anything was
+  actually sent. This form uses mode:"cors" against the new trusted-origin
+  path instead, which returns a real, readable 204 on success — don't
+  revert to no-cors if this ever stops working, fix the origin allowlist.
+-->
+{{/* Two callers, two purposes, same mechanism:
+       - homepage: a first-time-visitor lead magnet (the free white paper) —
+         lowest-friction ask, asks for an email and nothing else.
+       - course page: a returning-customer sign-in — course/list.html's own
+         CTA copy already says "Sign in above to read the Continuous
+         Migration core", which this box is what "above" now refers to.
+     Params (all optional, homepage/white-paper copy is the default so an
+     unparameterized call — none left, but kept as a safe fallback — still
+     makes sense): Eyebrow, Heading, Tagline, Next, ButtonLabel, UpsellNote. */}}
+<div class="login-box" id="login-box">
+  <p class="login-eyebrow">{{ .Eyebrow | default "Free, No Card" }}</p>
+  <h2 class="login-heading">{{ .Heading | default "Get the free migration white paper" }}</h2>
+  <p class="login-tagline">{{ .Tagline | default "One email, no password required." }}</p>
+  <form id="login-form" class="login-form">
+    <label class="login-email-label" for="login-email">Email address</label>
+    <input type="email" id="login-email" name="email" required placeholder="you@example.com" autocomplete="email">
+    <button type="submit" class="login-submit">{{ .ButtonLabel | default "Send me the white paper" }}</button>
+    <p class="login-status" id="login-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('login-form');
+  var status = document.getElementById('login-status');
+  var apiBase = 'https://api.theartofpostgresql.com';
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('login-email').value;
+    var button = form.querySelector('.login-submit');
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    var body = new URLSearchParams();
+    body.set('email', email);
+    {{/* TODO: placeholder path — the white paper doesn't have a real
+         asset or a hosting route on api.theartofpostgresql.com yet.
+         Swap this for the real gated-download path once that exists;
+         until then this magic link sends but has nowhere real to land. */}}
+    body.set('next', {{ .Next | default "/papers/mysql-to-postgresql" }});
+    fetch(apiBase + '/auth/magic-link', {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString()
+    }).then(function () {
+      status.textContent = {{ .SuccessMessagePrefix | default "Check your inbox — we sent your download link to " }} + email + '.' +
+        {{ if .UpsellNote }} ' {{ .UpsellNote }}' {{ else }} '' {{ end }};
+      form.querySelector('input[type="email"]').value = '';
+      button.disabled = false;
+    }).catch(function () {
+      status.textContent = 'Something went wrong — you can also sign in directly at ' +
+        'theartofpostgresql.com/login.';
+      button.disabled = false;
+    });
+  });
+})();
+</script>

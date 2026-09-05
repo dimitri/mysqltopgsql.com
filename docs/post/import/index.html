@@ -1,300 +1,77 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>MySQL to PostgreSQL  | How to import an SQL file using the command line in MySQL?</title>
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.31.1" />
-    
-    
-      <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
-    
-
-    
-    
-      <link href="/dist/css/app.ab4b67a3ea25990fa8279f3b7ef08b61.css" rel="stylesheet">
-    
-
-    
-      <link rel="stylesheet" href="http://mysqltopgsql.com/css/custom.css">
-    
-
-    
-      
-    
-
-    
-
-    <meta property="og:title" content="How to import an SQL file using the command line in MySQL?" />
-<meta property="og:description" content="The psql include facility, and the COPY command and protocol." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://mysqltopgsql.com/post/import/" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="How to import an SQL file using the command line in MySQL?">
-<meta itemprop="description" content="The psql include facility, and the COPY command and protocol.">
-
-
-
-<meta itemprop="wordCount" content="362">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="How to import an SQL file using the command line in MySQL?"/>
-<meta name="twitter:description" content="The psql include facility, and the COPY command and protocol."/>
-
-      
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-47059482-4', 'auto');
-ga('send', 'pageview');
-</script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
-
-    
-  </head>
-
-  <body class="ma0 avenir bg-near-white production">
-
-    
-   
-  
-
-  
-  
-  <header class="cover bg-top" style="background-image: url('http://mysqltopgsql.com/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg');">
-    <div class="pb3-m pb6-l bg-black-60">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="http://mysqltopgsql.com/" class="f3 fw2 hover-white no-underline white-90 dib">
-      MySQL to PostgreSQL
-    </a>
-    <div class="flex-l items-center">
-      
-        <ul class="pl0 mr3">
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/about/" title="About page">
-              About
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/post/" title="FAQ page">
-              FAQ
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="/project/" title="Project Methodology page">
-              Project Methodology
-            </a>
-          </li>
-          
-        </ul>
-      
-      
-
-
-
-
-
-
-
-  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
-    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
-  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
-</svg>
-
-  </a>
-
-
-    </div>
-  </div>
-</nav>
-
-      <div class="tc-l pv6 ph3 ph4-ns">
-        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">How to import an SQL file using the command line in MySQL?</h1>
-        
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
-            The psql include facility, and the COPY command and protocol.
-          </h2>
-        
-      </div>
-    </div>
-  </header>
-
-
-
-    <main class="pb7" role="main">
-      
-  <div class="flex-l mt2 mw8 center">
-    <article class="center cf pv5 ph3 ph4-ns mw7">
-      <h1 class="f1 athelas">
-        How to import an SQL file using the command line in MySQL?
-      </h1>
-      <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray">
-        <blockquote>
-<p>Use the <code>\i</code> command in <code>psql</code>, or the command line <code>psql -a -f file.sql</code></p>
-</blockquote>
-
-<p>The PostgreSQL
-<a href="https://www.postgresql.org/docs/current/static/app-psql.html">psql</a> command
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>How to import an SQL file using the command line in MySQL? &#183; MySQL to PostgreSQL</title><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css><link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/custom.8d61dbca301808ff864de0233fe98d3921e3e297f8060669effcb4d79aaa9ded.css></head><body><header class=site-header><div class=wrapper><nav class=site-nav><a class=site-logo href=/>mysqltopgsql.com</a>
+<button type=button class=site-nav-toggle aria-expanded=false aria-controls=site-nav-menu aria-label=Menu>
+<span></span><span></span><span></span></button><div class=site-nav-menu id=site-nav-menu><ul><li><a href=/project/>Methodology</a></li><li><a href=/post/>FAQ</a></li><li><a href=/course/>Course</a></li><li><a href=/about/>About</a></li><li><a href=/support/>Support</a></li><li><a href=/course/#login-box>Login</a></li></ul><a href=https://github.com/dimitri/pgloader class=site-nav-icon title="pgloader on GitHub" target=_blank><i class="fa-brands fa-github"></i></a></div><a href=/course/ class=sticky-cta><span class=sticky-cta-label>Get the Course &mdash; </span>$99</a></nav></div></header><script>(function(){var e=document.querySelector(".site-nav-toggle"),t=document.getElementById("site-nav-menu");if(!e||!t)return;e.addEventListener("click",function(){var n=t.classList.toggle("is-open");e.classList.toggle("is-open",n),e.setAttribute("aria-expanded",n?"true":"false")}),t.querySelectorAll("a").forEach(function(n){n.addEventListener("click",function(){t.classList.remove("is-open"),e.classList.remove("is-open"),e.setAttribute("aria-expanded","false")})})})()</script><meta name=description content="The psql include facility, and the COPY command and protocol."><meta property="og:description" content="The psql include facility, and the COPY command and protocol."><meta property="og:type" content="website"><meta property="og:title" content="How to import an SQL file using the command line in MySQL?"><meta property="og:url" content="http://mysqltopgsql.com/post/import/"><meta property="og:site_name" content="MySQL to PostgreSQL"><meta name=twitter:card content="summary"><meta name=twitter:title content="MySQL to PostgreSQL"><meta name=twitter:description content="The psql include facility, and the COPY command and protocol."><meta name=twitter:image content="http://mysqltopgsql.com/images/demo/slide.jpg"><meta name=twitter:creator content="@tapoueh"><main><div class=faq-lesson><div class=wrapper><article class=faq-lesson-content><nav class=faq-breadcrumb><a href=/post/>FAQ</a> <span>&#8250;</span> How to import an SQL file using the command line in MySQL?</nav><h1>How to import an SQL file using the command line in MySQL?</h1><p class=faq-lede>The psql include facility, and the COPY command and protocol.</p><div class=page-content><blockquote><p>Use the <code>\i</code> command in <code>psql</code>, or the command line <code>psql -a -f file.sql</code></p></blockquote><p>The PostgreSQL
+<a href=https://www.postgresql.org/docs/current/static/app-psql.html>psql</a> command
 line tool knows how to parse a file containing SQL statements and send them
-all to a PostgreSQL server. Several ways are possible.</p>
-
-<p>If you have a <code>magic.create.sql</code> file that contains the following:</p>
-
-<pre><code>create schema if not exists magic;
+all to a PostgreSQL server. Several ways are possible.</p><p>If you have a <code>magic.create.sql</code> file that contains the following:</p><pre tabindex=0><code>create schema if not exists magic;
 create table magic.allsets(data jsonb);
-</code></pre>
-
-<p>It is possible to connect to your target database then have <code>psql</code> execute
-the commands from the file in the following way:</p>
-
-<pre><code>$ psql foo
+</code></pre><p>It is possible to connect to your target database then have <code>psql</code> execute
+the commands from the file in the following way:</p><pre tabindex=0><code>$ psql foo
 foo# \i magic.create.sql
 CREATE SCHEMA
 CREATE TABLE
-</code></pre>
-
-<p>The following alternative shows both the queries and their result:</p>
-
-<pre><code>$ psql -d foo -a -f magic.create.sql
+</code></pre><p>The following alternative shows both the queries and their result:</p><pre tabindex=0><code>$ psql -d foo -a -f magic.create.sql
 create schema if not exists magic;
 CREATE SCHEMA
 create table magic.allsets(data jsonb);
 CREATE TABLE
-</code></pre>
-
-<p>In case your SQL script doesn&rsquo;t contain an explicit transaction, it&rsquo;s also
+</code></pre><p>In case your SQL script doesn&rsquo;t contain an explicit transaction, it&rsquo;s also
 possible to have <code>psql</code> wrap your commands in a transaction for you, using
-the <code>--single-transaction</code> switch.</p>
-
-<p>Also, you might want to use a <code>~/.psqlrc</code> setup such as the following, where
+the <code>--single-transaction</code> switch.</p><p>Also, you might want to use a <code>~/.psqlrc</code> setup such as the following, where
 we have <code>ON_ERROR_STOP</code> set to <code>on</code>, so that, you know, we stop at the first
-error.</p>
-
-<pre><code>\set PROMPT1 '%~%x%# '
+error.</p><pre tabindex=0><code>\set PROMPT1 &#39;%~%x%# &#39;
 \x auto
 \set ON_ERROR_STOP on
 \set ON_ERROR_ROLLBACK interactive
 
 -- \set VERBOSITY verbose
 
-\pset null '⦱'
-\pset null '¤'
-\pset linestyle 'unicode'
+\pset null &#39;⦱&#39;
+\pset null &#39;¤&#39;
+\pset linestyle &#39;unicode&#39;
 
 \pset unicode_border_linestyle single
 \pset unicode_column_linestyle single
 \pset unicode_header_linestyle double
 
-set intervalstyle to 'postgres_verbose';
+set intervalstyle to &#39;postgres_verbose&#39;;
 
-\setenv LESS '-iMFXSx4R'
-\setenv EDITOR '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -nw'
-</code></pre>
-
-<p>When using that setup, pay attention the the <code>EDITOR</code> setting and replace it
-with your own local preference. Then play with <code>\e</code> in <code>psql</code>.</p>
-
-<p>Now of course the output really is verbose:</p>
-
-<pre><code>~ psql -d foo -a --single-transaction -f magic.create.sql
-\set PROMPT1 '%~%x%# '
+\setenv LESS &#39;-iMFXSx4R&#39;
+\setenv EDITOR &#39;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -nw&#39;
+</code></pre><p>When using that setup, pay attention the the <code>EDITOR</code> setting and replace it
+with your own local preference. Then play with <code>\e</code> in <code>psql</code>.</p><p>Now of course the output really is verbose:</p><pre tabindex=0><code>~ psql -d foo -a --single-transaction -f magic.create.sql
+\set PROMPT1 &#39;%~%x%# &#39;
 \x auto
 Expanded display is used automatically.
 \set ON_ERROR_STOP on
 \set ON_ERROR_ROLLBACK interactive
 -- \set VERBOSITY verbose
-\pset null '⦱'
-Null display is &quot;⦱&quot;.
-\pset null '¤'
-Null display is &quot;¤&quot;.
-\pset linestyle 'unicode'
+\pset null &#39;⦱&#39;
+Null display is &#34;⦱&#34;.
+\pset null &#39;¤&#39;
+Null display is &#34;¤&#34;.
+\pset linestyle &#39;unicode&#39;
 Line style is unicode.
 \pset unicode_border_linestyle single
-Unicode border line style is &quot;single&quot;.
+Unicode border line style is &#34;single&#34;.
 \pset unicode_column_linestyle single
-Unicode column line style is &quot;single&quot;.
+Unicode column line style is &#34;single&#34;.
 \pset unicode_header_linestyle double
-Unicode header line style is &quot;double&quot;.
-set intervalstyle to 'postgres_verbose';
+Unicode header line style is &#34;double&#34;.
+set intervalstyle to &#39;postgres_verbose&#39;;
 SET
-\setenv LESS '-iMFXSx4R'
-\setenv EDITOR '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -nw'
+\setenv LESS &#39;-iMFXSx4R&#39;
+\setenv EDITOR &#39;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -nw&#39;
 create schema if not exists magic;
 CREATE SCHEMA
 create table magic.allsets(data jsonb);
 CREATE TABLE
-</code></pre>
-
-      </section>
-      <ul class="pa0">
-  
-</ul>
-
-    </article>
-    <div class="ph3 mt2 mt6-ns">
-      
-
-
-
-
-
-    </div>
-  </div>
-
-    </main>
-    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://mysqltopgsql.com/" >
-    &copy; 2018 MySQL to PostgreSQL
-  </a>
-  
-
-
-
-
-
-
-
-  <a href="https://github.com/dimitri/pgloader" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
-    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
-  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
-</svg>
-
-  </a>
-
-
-  </div>
-</footer>
-
-    
-
-  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
-
-
-  </body>
-</html>
+</code></pre></div></article><aside class=faq-sidebar><div class=faq-sidebar-block><h6>More Questions</h6><ul><li><a href=/post/unicode/>UTF-8 all the way through</a></li><li><a href=/post/sequences/>How to reset AUTO_INCREMENT in MySQL?</a></li><li><a href=/post/boolean/>Which MySQL data type to use for storing boolean values?</a></li><li><a href=/post/identifier-case-sensitivity/>Why did my queries break after migrating — is PostgreSQL case-sensitive?</a></li><li><a href=/post/zero-dates/>How do I handle MySQL's 0000-00-00 zero dates in PostgreSQL?</a></li><li><a href=/post/enum-types/>How does MySQL's ENUM type migrate to PostgreSQL?</a></li></ul></div><div class=faq-sidebar-cta><i class="fa-solid fa-graduation-cap"></i><h6>Go Further</h6><p>This FAQ is one piece of the full Continuous Migration course &mdash; pgloader, pg_auto_failover, and hands-on exercises.</p><a href=/course/ class="btn btn-primary">Get the Course</a></div></aside></div></div><div class=cta-box><div class="wrapper cta-box-inner"><h2 class=cta-title>Ready to leave MySQL behind for good?</h2><p class=cta-copy>This is one piece of a bigger method &mdash;
+<strong>pgloader, pg_auto_failover, and the stored-procedure porting
+no tool automates for you</strong> &mdash; built for developers
+making exactly this move.</p><a class=cta-button href=/course/>Get the MySQL &rarr; PostgreSQL Course</a></div></div></main><footer class=footer><div class=wrapper><div class=about_block><h6>about pgloader</h6><p>pgloader is the open-source tool named in nearly every MySQL-to-PostgreSQL
+migration guide published — it automates schema translation, data
+loading, and casting rules in a single command line. This site is
+written by pgloader's author.</p><p>Everything here — the methodology, the FAQ, the course — comes
+from actually running migrations, not from reading about them. See
+the project itself at <a href=https://pgloader.io>pgloader.io</a>.</p><ul><li><a target=_blank href=mailto:dim@tapoueh.org>email</a></li><li><a target=_blank href=https://github.com/dimitri/pgloader>github</a></li></ul></div><div class=footer_right_col><div class=faq_block><h6>FAQ</h6><dl><dt>Is this actually free, or is that a trick?</dt><dd>The Continuous Migration core — why to migrate, the budget, the target architecture, and pg_auto_failover — is free, permanently, no card required. The hands-on pgloader mechanics, casting rules, and stored-procedure porting are the paid course.</dd><dt>Do I need a PostgreSQL background to use this?</dt><dd>No — this is written for developers and DBAs coming from MySQL. Where PostgreSQL behaves differently, that's the whole point of the FAQ section.</dd><dt>Does pgloader handle Oracle or MS SQL Server too?</dt><dd>Yes, MS SQL Server is a supported source today; Oracle is on pgloader's roadmap, not yet shipped. This site is scoped to MySQL specifically.</dd><dt>I run pgloader in production — should I be paying for something?</dt><dd>If pgloader is part of your production workflow, its maintenance is worth funding — see the <a href=/support/>Support pgloader</a> page.</dd></dl></div><div class=whatsnew_block><h6>Elsewhere</h6><ul><li><a href=https://github.com/dimitri/pgloader>pgloader on GitHub</a></li><li><a href=https://oss.theartofpostgresql.com/pgloader/>pgloader maintenance & support</a></li><li><a href=https://theartofpostgresql.com/book/>The Art of PostgreSQL &mdash; the book</a></li><li><a href=https://theartofpostgresql.com/book/updates/>2026 Second Edition update</a></li><li><a href=https://theartofpostgresql.com/course/>General PostgreSQL courses</a></li><li><a href=https://theartofpostgresql.com/masterclass/>Live masterclasses</a></li><li><a href=https://theartofpostgresql.com>&rarr; The Art of PostgreSQL</a></li></ul></div></div></div></footer><div class=copyright><div class=wrapper>&copy; 2026 MySQL to PostgreSQL. Part of <a href=https://theartofpostgresql.com>The Art of PostgreSQL</a>.</div></div></body></html>
