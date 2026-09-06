@@ -1,0 +1,58 @@
+name: build & deploy
+
+# Two triggers — no daily cron here: unlike tapoueh.org, this site has no
+# future-dated posts waiting to be released, so there's no metronome to run.
+#  - push to master        → publish edits immediately
+#  - manual dispatch        → publish on demand
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  # Pinned to the version this site has actually been built and verified
+  # with locally (hugo version) — not copied from tapoueh.org's own pin,
+  # which tracks a different site's own testing.
+  HUGO_VERSION: "0.165.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0          # full history for .Lastmod / .GitInfo
+      - name: Install Hugo (extended)
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+      - name: Build
+        # baseURL comes from config.toml so it cannot drift from static/CNAME.
+        # It used to be overridden here to https:// because config.toml said
+        # http://, which meant every locally-built canonical, og:url and
+        # sitemap entry disagreed with what CI published. config.toml is https
+        # now and the override is gone.
+        run: hugo --minify --gc
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

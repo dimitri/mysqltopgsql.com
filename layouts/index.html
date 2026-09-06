@@ -1,41 +1,97 @@
 {{ define "main" }}
-<article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
-  <div style="text-align: left">
+<section class="section section-alt login-section">
+  <div class="wrapper">
+    <div class="content">
+      {{/* The homepage's job is the lowest-friction ask: an email for the
+           free white paper, not a $99 course opt-in on a cold visit. The
+           course/book/masterclass asks come later, once the visitor has
+           actually read something (see the FAQ teaser and CTA sections
+           below, and course/list.html's own sign-in box). */}}
+      {{ partial "login-form.html" (dict
+        "Eyebrow" "Free, No Card"
+        "Heading" "Get the free migration white paper"
+        "Tagline" "The whole Continuous Migration method, one PDF, one email away."
+        "ButtonLabel" "Send me the white paper"
+        "SuccessMessagePrefix" "Check your inbox — we sent your white paper to "
+        "UpsellNote" "While you wait, the full Continuous Migration course covers all of it hands-on."
+      ) }}
+    </div>
+  </div>
+</section>
+
+<article class="wrapper page home-intro">
+  <div class="page-content">
     {{ .Content }}
   </div>
-  </article>
-  {{/* Define a section to pull recent posts from. For Hugo 0.20 this will default to the section with the most number of pages. */}}
-  {{ $mainSections := .Site.Params.mainSections | default (slice "post") }}
-  {{/* Create a variable with that section to use in multiple places. */}}
-  {{ $section := where .Site.RegularPages "Section" "in" $mainSections }}
-  {{/* Check to see if the section is defined for ranging through it */}}
-  {{ $section_count := len $section }}
-  {{ if ge $section_count 1 }}
-    {{/* Derive the section name  */}}
-    {{ $section_name := index (.Site.Params.mainSections) 0 }}
+</article>
 
-    <div class="pa3 pa4-ns w-100 w-70-ns center">
-      {{/* Use $section_name to get the section title. Use "with" to only show it if it exists */}}
-       {{ with .Site.GetPage "section" $section_name }}
-          <h1 class="flex-none">
-            {{ .Title }}
-          </h1>
-        {{ end }}
-
-      <section class="w-100">
-        {{ range $section  }}
-          <h2 class="w-100 mb4 fw4">
-            <a href="{{ .URL }}" class="link black dim">
-              {{ .Title }}
-            </a>
-          </h2>
-        {{ end }}
-
-        {{ with .Site.GetPage "section" $section_name }}
-          <a href="{{ .URL }}" class="link db f6 pa2 br3 bg-mid-gray white dim w4 tc">All {{.Title }}</a>
-        {{ end }}
-        </section>
-
+<section class="section">
+  <div class="wrapper">
+    <div class="content">
+      {{/* Was "Why migrate", which was also the first card's own title —
+           the section heading and its first item saying the same thing
+           told a skimming reader nothing about what the other two are. */}}
+      <h2 class="h-lead"><i class="fa-solid fa-route section-icon"></i>Three questions to settle first</h2>
+      <p class="subtitle">Before you touch a single table: what you gain, what the tool does, and what it won&rsquo;t</p>
+      <div class="value_props">
+        <div class="value_prop">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <h3>Why migrate</h3>
+          <p class="subtitle">Beyond licensing cost</p>
+          <ul>
+            <li>No per-core or per-user license</li>
+            <li>Point-in-time recovery, logical replication, JSONB — in the box</li>
+            <li>Standard SQL: CTEs, window functions, grouping sets</li>
+          </ul>
+        </div>
+        <div class="value_prop">
+          <i class="fa-solid fa-gears"></i>
+          <h3>What pgloader automates</h3>
+          <p class="subtitle">Schema and data, one command</p>
+          <ul>
+            <li>Catalog fetch, schema translation, casting rules</li>
+            <li>Parallel COPY, then parallel index build</li>
+            <li>Nightly re-runs for the length of the project</li>
+          </ul>
+        </div>
+        <div class="value_prop">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <h3>What still needs porting</h3>
+          <p class="subtitle">The part no tool does for you</p>
+          <ul>
+            <li>Stored procedures, triggers, and views</li>
+            <li>Application SQL that assumes MySQL behavior</li>
+            <li>Covered hands-on in the full course</li>
+          </ul>
+        </div>
       </div>
-  {{ end }}
+      <div class="buttons">
+        <a href="/course/" class="btn btn-primary">Get the Course</a>
+        <a href="/project/" class="btn btn-secondary">Read the Methodology</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* Restores what the 2018 production homepage had (10 FAQ titles right
+     on the page) and this redesign initially dropped — most of this
+     site's organic search traffic almost certainly lands on those FAQ
+     answers, so the homepage should point at them directly instead of
+     making a visitor find "FAQ" in the nav first. */}}
+<section class="section section-alt home-faq">
+  <div class="wrapper">
+    <div class="content">
+      <h2><i class="fa-solid fa-circle-question section-icon"></i>Real questions, PostgreSQL answers</h2>
+      <p class="subtitle">The MySQL questions developers actually search for</p>
+      <div class="home-faq-grid">
+        {{ range first 8 ((where .Site.RegularPages "Section" "post").ByWeight) }}
+        <a class="home-faq-item" href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{ end }}
+      </div>
+      <a href="{{ "/post/" | relURL }}" class="cta-button cta-button-inline">See the Full Migration Checklist</a>
+    </div>
+  </div>
+</section>
+
+{{ partial "cta.html" . }}
 {{ end }}

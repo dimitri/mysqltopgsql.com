@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 14
+icon: "fa-solid fa-users"
 title: "How to get a list of MySQL user accounts?"
 description: "First steps using psql and catalog queries"
 ---

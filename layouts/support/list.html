@@ -1,0 +1,115 @@
+{{ define "main" }}
+<section class="section">
+  <div class="wrapper">
+    <div class="content">
+      <h2><i class="fa-solid fa-hand-holding-heart section-icon"></i>Open source, not maintained-for-free-forever</h2>
+      <p class="subtitle">Two different promises, easy to confuse</p>
+      {{ .Content }}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrapper">
+    <div class="content">
+      <h2><i class="fa-solid fa-gears section-icon"></i>What your support funds</h2>
+      <p class="subtitle">The part that doesn't show up in a git log</p>
+      <div class="value_props">
+        <div class="value_prop">
+          <i class="fa-solid fa-code-pull-request"></i>
+          <h3>Faster fixes</h3>
+          <p class="subtitle">Priority queue and SLAs</p>
+          <ul>
+            <li>Reported issues get a priority queue, not best-effort</li>
+            <li>Defined response times by tier</li>
+          </ul>
+        </div>
+        <div class="value_prop">
+          <i class="fa-solid fa-database"></i>
+          <h3>New source support</h3>
+          <p class="subtitle">Where the roadmap goes next</p>
+          <ul>
+            <li>Driver compatibility and SQL parsing work</li>
+            <li>Sponsor-funded features ship faster — MS SQL Server support was one</li>
+          </ul>
+        </div>
+        <div class="value_prop">
+          <i class="fa-solid fa-compass"></i>
+          <h3>Roadmap input</h3>
+          <p class="subtitle">At the Sponsor tier and above</p>
+          <ul>
+            <li>Direct say in what gets prioritized next</li>
+            <li>Reserved bandwidth for your dependencies</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrapper">
+    <div class="content">
+      {{/* Was a six-row comparison table. A table asks the reader to hold
+           four columns in their head and rank the rows themselves; most
+           won't, and the table had no way to click through to a
+           checkout at all — the only CTA was "go read another site".
+           Card per tier, one CTA each, straight to the ThriveCart
+           checkout, with one tier badged as the recommended default.
+           Names and prices are the same ones pgloader.io and
+           oss.theartofpostgresql.com show, kept identical on purpose so
+           a reader arriving from either doesn't have to re-map them. */}}
+      <h2 class="h-lead"><i class="fa-solid fa-tags section-icon"></i>Pricing &amp; Tiers</h2>
+      <p class="subtitle">One shared model across every project on oss.theartofpostgresql.com — pgloader, pgcopydb, pg_auto_failover, and pgextwlist, maintained in one place so it never drifts out of sync per project.</p>
+
+      <div class="tier-cards">
+        <div class="tier-card">
+          <h3>Community</h3>
+          <p class="tier-price">€0</p>
+          <p class="tier-for">For evaluating, or non-critical use.</p>
+          <p class="tier-benefit">Best-effort, through GitHub, like everyone else.</p>
+        </div>
+        <div class="tier-card">
+          <h3>Supporter</h3>
+          <p class="tier-price">€100<span>/mo</span></p>
+          <p class="tier-for">Your issues stop getting lost in the queue.</p>
+          <p class="tier-benefit">Priority queue, answered within a few days.</p>
+          <a href="https://sales.theartofpostgresql.com/oss-sponsors/" class="btn btn-secondary" target="_blank" rel="noopener">Get this tier &rarr;</a>
+        </div>
+        <div class="tier-card tier-recommended">
+          <p class="tier-badge">Recommended</p>
+          <h3>Professional</h3>
+          <p class="tier-price">€800<span>/mo</span></p>
+          <p class="tier-for">When a production system depends on the tool.</p>
+          <p class="tier-benefit">Patches triaged under an SLA, land in the next release.</p>
+          <a href="https://sales.theartofpostgresql.com/oss-sponsors/" class="btn btn-primary" target="_blank" rel="noopener">Get this tier &rarr;</a>
+        </div>
+        <div class="tier-card">
+          <h3>Sponsor</h3>
+          <p class="tier-price">€2,000<span>/mo</span></p>
+          <p class="tier-for">When your roadmap depends on its roadmap.</p>
+          <p class="tier-benefit">Roadmap input, and development bandwidth reserved for you.</p>
+          <a href="https://sales.theartofpostgresql.com/oss-sponsors/" class="btn btn-secondary" target="_blank" rel="noopener">Get this tier &rarr;</a>
+        </div>
+        <div class="tier-card">
+          <h3>Per-Release Sponsor</h3>
+          <p class="tier-price">€10,000<span>/release</span></p>
+          <p class="tier-for">Time-critical dependencies, one release at a time.</p>
+          <p class="tier-benefit">Prioritized PRs and features, credited in the release notes. One sponsor per release.</p>
+          <a href="https://sales.theartofpostgresql.com/oss-sponsors/" class="btn btn-secondary" target="_blank" rel="noopener">Get this tier &rarr;</a>
+        </div>
+        <div class="tier-card">
+          <h3>Fast-Lane</h3>
+          <p class="tier-price">€3,000<span>/issue</span></p>
+          <p class="tier-for">One urgent blocker, handled outright.</p>
+          <p class="tier-benefit">Guaranteed resolution in the next release, no subscription required.</p>
+          <a href="https://sales.theartofpostgresql.com/oss-sponsors/" class="btn btn-secondary" target="_blank" rel="noopener">Get this tier &rarr;</a>
+        </div>
+      </div>
+      <p class="tier-note">Same tiers as every project on <a href="https://oss.theartofpostgresql.com/#pricing" target="_blank" rel="noopener">oss.theartofpostgresql.com</a> — one checkout, kept current in one place, whichever page you get here from. The code itself stays on <a href="https://github.com/dimitri/pgloader" target="_blank" rel="noopener">GitHub</a>, free, either way.</p>
+    </div>
+  </div>
+</section>
+
+{{ partial "cta.html" . }}
+{{ end }}

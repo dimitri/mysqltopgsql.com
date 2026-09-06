@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap">
+  <!-- Same CDN/version as oss.theartofpostgresql.com's head.html, for consistency across the family -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  {{/* The real theme's own stylesheet — vendored 1:1 in themes/taop/static/css,
+       Hugo mounts it at /css/style.css automatically. Loads BEFORE custom.css
+       so custom.css only needs to cover what's genuinely new (course page,
+       FAQ hub/lesson, support page, login form) — the header/footer/wrapper/
+       typography/button rules below all come from the real site now. */}}
+  <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+  {{/* Fingerprinted via Hugo Pipes (assets/css/custom.css, not static/) —
+       the URL's own hash changes whenever the file's content does, so a
+       browser's cached copy from an earlier edit this session is never
+       served again by mistake. The old static/ + custom_css-param
+       approach needed a hard refresh after every single change; this
+       doesn't. */}}
+  {{ with resources.Get "css/custom.css" }}
+    {{/* No integrity attribute — SRI is for guarding third-party CDN
+         resources against tampering, not a same-origin file this same
+         dev server just generated. If Hugo's resource cache ever computes
+         that hash even slightly out of sync with the served bytes (rapid
+         rebuilds during a long dev session are exactly when that can
+         happen), the browser silently blocks the whole stylesheet with no
+         visible error — which is almost certainly what just happened. */}}
+    {{ $css := . | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  {{ end }}
+  {{ if .Site.Params.googleAnalytics }}{{ end }}
+</head>
+<body>
+  {{ block "header" . }}
+    {{ partial "site-header.html" . }}
+  {{ end }}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "site-footer.html" . }}
+</body>
+</html>

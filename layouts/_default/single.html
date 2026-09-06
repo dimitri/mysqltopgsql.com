@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="wrapper page">
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.description }}<p class="page-lede">{{ . }}</p>{{ end }}
+  <div class="page-content">
+    {{ .Content }}
+  </div>
+</article>
+{{ partial "cta.html" . }}
+{{ end }}

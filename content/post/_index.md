@@ -1,11 +1,12 @@
 ---
-title: "FAQ"
-description: "MySQL to PostgreSQL Frequently Asked Questions"
+title: "MySQL to PostgreSQL: The Answers"
+eyebrow: "Real Questions, PostgreSQL Answers"
+icon: "fa-solid fa-circle-question"
+description: "The MySQL questions developers actually search for, answered the PostgreSQL way — from encoding gotchas to identifier case-sensitivity."
 date: 2017-03-02T12:00:00-05:00
 ---
 
-We took the most voted [StackOverflow MySQL
-questions](https://stackoverflow.com/questions/tagged/mysql?sort=votes&pageSize=15)
-and give answers to them when using PostgreSQL, so that you'll find yourself
-at home right away.
-
+We took the most-searched [MySQL questions on StackOverflow](https://stackoverflow.com/questions/tagged/mysql?sort=votes&pageSize=15)
+— and the ones that come up specifically during a MySQL-to-PostgreSQL
+migration — and answered them the PostgreSQL way, so you find your footing
+right away.
