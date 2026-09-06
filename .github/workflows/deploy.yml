@@ -22,7 +22,7 @@ env:
   # Pinned to the version this site has actually been built and verified
   # with locally (hugo version) — not copied from tapoueh.org's own pin,
   # which tracks a different site's own testing.
-  HUGO_VERSION: "0.131.0"
+  HUGO_VERSION: "0.165.0"
 
 jobs:
   build:
@@ -37,7 +37,12 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
       - name: Build
-        run: hugo --minify --gc --baseURL "https://mysqltopgsql.com/"
+        # baseURL comes from config.toml so it cannot drift from static/CNAME.
+        # It used to be overridden here to https:// because config.toml said
+        # http://, which meant every locally-built canonical, og:url and
+        # sitemap entry disagreed with what CI published. config.toml is https
+        # now and the override is gone.
+        run: hugo --minify --gc
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./docs

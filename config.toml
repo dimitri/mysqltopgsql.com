@@ -1,4 +1,4 @@
-baseURL = "http://mysqltopgsql.com/"
+baseURL = "https://mysqltopgsql.com/"
 languageCode = "en-us"
 title = "MySQL to PostgreSQL"
 
