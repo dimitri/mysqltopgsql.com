@@ -1,0 +1,128 @@
+{{ define "main" }}
+{{/* The course shipped with a different shape than this page described.
+     It is 16 modules in three groups — 6 common, 5 MySQL, 5 SQL Server —
+     and the two engine lanes are siblings, not steps: a MySQL buyer never
+     sees the SQL Server modules and vice versa. So a single flat 1..11
+     table was wrong twice over: wrong module list, and wrong mental model.
+
+     Grouped table instead, with the lane each module belongs to stated
+     once per group. Every module title is real text rather than the
+     course's own TikZ course-map figure (which exists, and says the same
+     thing) — these titles are the page's keywords, and the figure's text
+     is outlined glyphs no search engine can read. */}}
+<nav class="cp-part-nav" aria-label="Module index">
+  <div class="cp-part-nav-inner">
+    <h2 class="cp-part-nav-title">All {{ .Site.Params.course_modules_total }} Modules</h2>
+    <p class="cp-part-nav-lede">Six modules everyone gets, then your engine&rsquo;s five. Either lane is {{ .Site.Params.course_modules_lane }} modules; the first {{ .Site.Params.course_modules_free }} are free to read.</p>
+    {{/* The price, stated once up here with a jump to the full block.
+         The detailed pricing belongs after the curriculum — that is the
+         argument, and it has to land before the ask — but the page is
+         ~12,000px tall, so without this a reader who arrives already
+         decided has no way to act on it. */}}
+    <p class="cp-nav-price">From <strong>{{ .Site.Params.course_price }}</strong> for your lane, <strong>{{ .Site.Params.course_price_complete }}</strong> for both &mdash; one payment, lifetime access. <a href="#pricing">Jump to pricing &darr;</a></p>
+
+    <h3 class="cp-group-head"><span class="cp-group-tag common">Everyone</span> Migrating to PostgreSQL</h3>
+    <table class="cp-part-table">
+      <thead><tr><th class="col-part">Module</th><th class="col-title">Title</th><th class="col-hook">Focus</th></tr></thead>
+      <tbody>
+        <tr><td class="col-part">Mod 01<span class="cp-tier-pill core">Free</span></td><td class="col-title">Why (and Whether) to Migrate</td><td class="col-hook">TCO, architecture freedom, and the port-vs-migrate distinction</td></tr>
+        <tr><td class="col-part">Mod 02<span class="cp-tier-pill core">Free</span></td><td class="col-title">The Migration Budget</td><td class="col-hook">Data, code, service, and opportunity cost</td></tr>
+        <tr><td class="col-part">Mod 03<span class="cp-tier-pill core">Free</span></td><td class="col-title">Continuous Migration: Target Architecture</td><td class="col-hook">Production-ready PostgreSQL before you migrate a single row</td></tr>
+        <tr><td class="col-part">Mod 04<span class="cp-tier-pill core">Free</span></td><td class="col-title">Automated Failover with pg_auto_failover</td><td class="col-hook">Monitor, primary, standby — and a real promotion, watched</td></tr>
+        <tr><td class="col-part">Mod 05<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Nightly Migration and the D-Day Cutover</td><td class="col-hook">Forked CI, finding the SQL that fails, running the rehearsed cutover</td></tr>
+        <tr><td class="col-part">Mod 06<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Migrating to Managed Cloud PostgreSQL</td><td class="col-hook">Self-managed vs managed, on the axes that actually constrain you</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="cp-group-head"><span class="cp-group-tag mysql">MySQL lane</span> Your engine&rsquo;s five</h3>
+    <table class="cp-part-table">
+      <tbody>
+        <tr><td class="col-part">Mod 07<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Migrating Data with pgloader</td><td class="col-hook">The five-step pipeline, one command line</td></tr>
+        <tr><td class="col-part">Mod 08<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Casting Rules and Schema Mapping</td><td class="col-hook">Custom <code>.load</code> files, per-column casts, catalog mapping</td></tr>
+        <tr><td class="col-part">Mod 09<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">MySQL Quirks, PostgreSQL Answers</td><td class="col-hook">Eleven real queries rewritten — the most-voted FAQ questions</td></tr>
+        <tr><td class="col-part">Mod 10<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Migrating Stored Procedures, Triggers, and Views</td><td class="col-hook">Plain SQL, SQL function, or PL/pgSQL — and how to prove the port</td></tr>
+        <tr><td class="col-part">Mod 11<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Hands-On: Build Your Own Migration</td><td class="col-hook">Your own <code>.load</code> file against the whole schema, then the cutover</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="cp-group-head"><span class="cp-group-tag mssql">SQL Server lane</span> The other engine, same six common modules</h3>
+    <table class="cp-part-table">
+      <tbody>
+        <tr><td class="col-part">Mod 12<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Migrating Data with pgloader from MS SQL</td><td class="col-hook">Connecting, and the type mapping that differs from the MySQL path</td></tr>
+        <tr><td class="col-part">Mod 13<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Casting Rules and Schema Mapping for MS SQL</td><td class="col-hook">Load files scoped to <code>dbo</code>, per-column overrides</td></tr>
+        <tr><td class="col-part">Mod 14<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">T-SQL to PL/pgSQL</td><td class="col-hook">Triggers, TRY/CATCH, MERGE, cursors, OUTPUT, TOP&nbsp;&hellip;&nbsp;WITH TIES</td></tr>
+        <tr><td class="col-part">Mod 15<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Babel Fish for PostgreSQL</td><td class="col-hook">What the compatibility layer does and doesn&rsquo;t replace</td></tr>
+        <tr><td class="col-part">Mod 16<span class="cp-tier-pill advanced">Course</span></td><td class="col-title">Hands-On: Build Your Own MS SQL Migration</td><td class="col-hook">Both paths run on the same schema, then justify the call</td></tr>
+      </tbody>
+    </table>
+    <p class="cp-lane-note">This site covers the MySQL lane. The SQL Server
+    lane is the same six common modules with its own five &mdash; buy either on
+    its own, or <a href="{{ .Site.Params.course_checkout_url }}" target="_blank" rel="noopener">take both</a>.</p>
+  </div>
+</nav>
+
+
+{{/* Three options, one checkout: two single-engine lanes at the same
+     price (they are siblings, not a good/better pair) and Complete,
+     which carries the badge — it is the one most buyers should take and
+     the only one that picks up Oracle later. The checkout holds a couple
+     of further options; they do not belong on a page whose job is a
+     three-way choice. */}}
+<section class="section cp-pricing" id="pricing">
+  <div class="wrapper">
+    <div class="content">
+      <h2 class="h-lead"><i class="fa-solid fa-tags section-icon"></i>One Course, Pick Your Engine</h2>
+      <p class="subtitle">Modules 1&ndash;{{ .Site.Params.course_modules_free }} are free to read. Everything below is a one-time purchase &mdash; no subscription, lifetime access, and updates included.</p>
+
+      <div class="tier-cards">
+        <div class="tier-card">
+          <h3>MySQL to PostgreSQL</h3>
+          <p class="tier-price">{{ .Site.Params.course_price }}</p>
+          <p class="tier-for">The lane this site is about.</p>
+          <p class="tier-benefit">{{ .Site.Params.course_modules_lane }} modules: the six common ones plus pgloader, casting rules, MySQL quirks, procedures and triggers, and the hands-on build.</p>
+          <a href="{{ .Site.Params.course_checkout_url }}" class="btn btn-secondary" target="_blank" rel="noopener">Get the MySQL lane &rarr;</a>
+        </div>
+
+        <div class="tier-card tier-recommended">
+          <p class="tier-badge">Recommended</p>
+          <h3>Complete</h3>
+          <p class="tier-price">{{ .Site.Params.course_price_complete }}</p>
+          <p class="tier-for">Both engines &mdash; and Oracle when it ships.</p>
+          <p class="tier-benefit">All {{ .Site.Params.course_modules_total }} modules, both lanes, and the Oracle lane at no extra cost when it lands. Fifty dollars more than one lane, for two.</p>
+          <a href="{{ .Site.Params.course_checkout_url }}" class="btn btn-primary" target="_blank" rel="noopener">Get everything &rarr;</a>
+        </div>
+
+        <div class="tier-card">
+          <h3>SQL Server to PostgreSQL</h3>
+          <p class="tier-price">{{ .Site.Params.course_price }}</p>
+          <p class="tier-for">The other lane, priced the same.</p>
+          <p class="tier-benefit">{{ .Site.Params.course_modules_lane }} modules: the same six common ones plus MS SQL pgloader, casting rules, T-SQL to PL/pgSQL, Babel Fish, and the hands-on build.</p>
+          <a href="{{ .Site.Params.course_checkout_url }}" class="btn btn-secondary" target="_blank" rel="noopener">Get the SQL Server lane &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* Returning-customer sign-in, and the target of the nav's Login link.
+     It used to be the first thing on the page — a sign-in form standing
+     where the value proposition belongs, which reads as a paywall before
+     the reader knows what is behind it. Anchors work from anywhere, so
+     moving it last costs returning customers nothing and gives new
+     readers the curriculum first. */}}
+<section class="section section-alt login-section">
+  <div class="wrapper">
+    <div class="content">
+      {{ partial "login-form.html" (dict
+        "Eyebrow" "Already bought, or reading free"
+        "Heading" "Sign in to the course"
+        "Tagline" "Modules 1–4 need no purchase. One email, no password."
+        "ButtonLabel" "Send my sign-in link"
+        "Next" "/courses/migrate"
+        "SuccessMessagePrefix" "Check your inbox — we sent a sign-in link to "
+      ) }}
+    </div>
+  </div>
+</section>
+
+{{ end }}

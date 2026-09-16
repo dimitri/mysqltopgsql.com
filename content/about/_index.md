@@ -1,19 +1,33 @@
 ---
-title: "About"
-description: "How to Migrate from MySQL to PostgreSQL?"
-featured_image: "/img/thompson-history-of-composing-machines-1200grey-0078-wicks-rotary-typecaster-crop-4026x4224-scale-1024x1074.jpg"
-
+title: "pgloader in Practice"
+eyebrow: "One Command Line, Real Output"
+icon: "fa-solid fa-terminal"
+description: "What actually happens when pgloader migrates your data — the command, the casting rules, and a real migration report."
 ---
 
 When migrating from MySQL to PostgreSQL, you need to implement a proper
 [Project Methodology](/project). Your migration budget is then splitted in
 those 4 areas:
 
-  1. Migrating the Data
-  2. Migrating the Code
-  3. Migrating the Service
-  4. The Opportunity Cost
-  
+<nav class="toc-grid">
+  <a class="toc-card" href="#migrating-the-data">
+    <i class="fa-solid fa-database"></i>
+    <span>Migrating the Data</span>
+  </a>
+  <a class="toc-card" href="#migrating-the-code">
+    <i class="fa-solid fa-code"></i>
+    <span>Migrating the Code</span>
+  </a>
+  <a class="toc-card" href="#migrating-the-service">
+    <i class="fa-solid fa-server"></i>
+    <span>Migrating the Service</span>
+  </a>
+  <a class="toc-card" href="#opportunity-cost">
+    <i class="fa-solid fa-hourglass-half"></i>
+    <span>The Opportunity Cost</span>
+  </a>
+</nav>
+
 # Migrating the Data
 
 [pgloader](http://pgloader.io) implements fully automated migration from
@@ -22,10 +36,6 @@ MySQL to PostgreSQL in a single command line:
 ~~~ bash
 $ pgloader mysql://user@host/dbname pgsql://user@host/dbname
 ~~~
-
-{{< figure src="/img/TypeCaster.jpg"
-         title="A Type Caster" >}}
-
 
 More complex scenarios are of course possible:
 
@@ -149,4 +159,20 @@ While you're working on the migration, you are not implementing those new
 shiny features that the Product department is waiting for. Everybody needs
 to understand that you're busy migrating, and that the new system is going
 to be so much better off using PostgreSQL.
+
+# As a Developer, How Do I Learn PostgreSQL?
+
+Migrating the data and the tooling is one thing — writing PostgreSQL well,
+day to day, as a developer, is another. [The Art of
+PostgreSQL]({{< param book_url >}}) is one of the very best resources
+available for that: it teaches SQL to application developers specifically,
+not to DBAs, which is exactly the gap most MySQL developers hit once the
+migration itself is done.
+
+The book just received its [2026 Second
+Edition update]({{< param book_update_url >}}) — expanded coverage through
+PostgreSQL 12–18, a new chapter on `pgvector` for vector and hybrid search,
+Citus distributed architecture, and a companion online learning platform
+with live SQL exercises against a real database. Existing owners get the
+update free.
 

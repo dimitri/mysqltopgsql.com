@@ -1,0 +1,56 @@
+<footer class="footer">
+  <div class="wrapper">
+    <div class="about_block">
+      <h6>about pgloader</h6>
+      <p>pgloader is the open-source tool named in nearly every MySQL-to-PostgreSQL
+      migration guide published — it automates schema translation, data
+      loading, and casting rules in a single command line. This site is
+      written by pgloader's author.</p>
+      <p>Everything here — the methodology, the FAQ, the course — comes
+      from actually running migrations, not from reading about them. See
+      the project itself at <a href="https://pgloader.io">pgloader.io</a>.</p>
+      {{/* Icon-swap row: real theme's CSS matches [href*='mailto']/
+           [href*='github'] against real /images/icons/*.png assets and
+           hides the link text (font-size:0 on the parent ul) — only use
+           hrefs that actually match one of those selectors here, anything
+           else would render as an invisible, icon-less dead link. */}}
+      <ul>
+        <li><a target="_blank" href="mailto:dim@tapoueh.org">email</a></li>
+        <li><a target="_blank" href="{{ .Site.Params.github }}">github</a></li>
+      </ul>
+    </div>
+    <div class="footer_right_col">
+      <div class="faq_block">
+        <h6>FAQ</h6>
+        <dl>
+          <dt>Is this actually free, or is that a trick?</dt>
+          <dd>The Continuous Migration core — why to migrate, the budget, the target architecture, and pg_auto_failover — is free, permanently, no card required. The hands-on pgloader mechanics, casting rules, and stored-procedure porting are the paid course.</dd>
+          <dt>Do I need a PostgreSQL background to use this?</dt>
+          <dd>No — this is written for developers and DBAs coming from MySQL. Where PostgreSQL behaves differently, that's the whole point of the FAQ section.</dd>
+          <dt>Does pgloader handle Oracle or MS SQL Server too?</dt>
+          <dd>Yes, MS SQL Server is a supported source today; Oracle is on pgloader's roadmap, not yet shipped. This site is scoped to MySQL specifically.</dd>
+          <dt>I run pgloader in production — should I be paying for something?</dt>
+          <dd>If pgloader is part of your production workflow, its maintenance is worth funding — see the <a href="{{ "/support/" | relURL }}">Support pgloader</a> page.</dd>
+        </dl>
+      </div>
+      <div class="whatsnew_block">
+        <h6>Elsewhere</h6>
+        <ul>
+          <li><a href="{{ .Site.Params.github }}">pgloader on GitHub</a></li>
+          <li><a href="https://oss.theartofpostgresql.com/pgloader/">pgloader maintenance &amp; support</a></li>
+          <li><a href="{{ .Site.Params.book_url }}">The Art of PostgreSQL &mdash; the book</a></li>
+          <li><a href="{{ .Site.Params.book_update_url }}">2026 Second Edition update</a></li>
+          <li><a href="{{ .Site.Params.taop_course_url }}">General PostgreSQL courses</a></li>
+          <li><a href="{{ .Site.Params.masterclass_url }}">Live masterclasses</a></li>
+          <li><a href="https://theartofpostgresql.com">&rarr; The Art of PostgreSQL</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="copyright">
+  <div class="wrapper">
+    &copy; {{ now.Year }} {{ .Site.Title }}. Part of <a href="https://theartofpostgresql.com">The Art of PostgreSQL</a>.
+  </div>
+</div>

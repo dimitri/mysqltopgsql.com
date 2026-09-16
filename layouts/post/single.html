@@ -1,21 +1,37 @@
-{{ define "header" }}
-   {{/* We can override any block in the baseof file be defining it in the template */}}
-  {{ partial "page-header.html" . }}
-{{ end }}
-
 {{ define "main" }}
-  <div class="flex-l mt2 mw8 center">
-    <article class="center cf pv5 ph3 ph4-ns mw7">
-      <h1 class="f1 athelas">
-        {{ .Title }}
-      </h1>
-      <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray">
+<div class="faq-lesson">
+  <div class="wrapper">
+    <article class="faq-lesson-content">
+      <nav class="faq-breadcrumb">
+        <a href="{{ "/post/" | relURL }}">FAQ</a> <span>&rsaquo;</span> {{ .Title }}
+      </nav>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.description }}<p class="faq-lede">{{ . }}</p>{{ end }}
+      <div class="page-content">
         {{ .Content }}
-      </section>
-      {{ partial "tags.html" . }}
+      </div>
     </article>
-    <div class="ph3 mt2 mt6-ns">
-      {{ partial "menu-contextual.html" . }}
-    </div>
+
+    <aside class="faq-sidebar">
+      <div class="faq-sidebar-block">
+        <h6>More Questions</h6>
+        <ul>
+          {{ $current := . }}
+          {{ range first 6 ((where .Site.RegularPages "Section" "post").ByWeight) }}
+            {{ if ne .Permalink $current.Permalink }}
+              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+      <div class="faq-sidebar-cta">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <h6>Go Further</h6>
+        <p>This FAQ is one piece of the full Continuous Migration course &mdash; pgloader, pg_auto_failover, and hands-on exercises.</p>
+        <a href="/course/" class="btn btn-primary">Get the Course</a>
+      </div>
+    </aside>
   </div>
+</div>
+{{ partial "cta.html" . }}
 {{ end }}

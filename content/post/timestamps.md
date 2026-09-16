@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 8
+icon: "fa-solid fa-clock"
 title: "Should I use field 'datetime' or 'timestamp'?"
 description: "And what about the time zone, too?"
 ---

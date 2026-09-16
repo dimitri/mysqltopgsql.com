@@ -1,0 +1,92 @@
+{{ define "main" }}
+<div class="faq-hub">
+  <div class="wrapper">
+    {{/* The Migration Checklist — the main things that bite people during
+         a MySQL-to-PostgreSQL migration, grouped by theme, each item
+         dropping straight into its full FAQ answer below. This is the
+         "main points to pay attention to" view; the plain grid further
+         down stays as the browse-everything view, unchanged. */}}
+    <div class="checklist-intro">
+      <h2>The Migration Checklist</h2>
+      <p class="subtitle">What actually bites people during a migration, grouped by theme</p>
+    </div>
+    {{ $groups := slice
+      (dict
+        "title" "Data Types & Schema"
+        "icon" "fa-solid fa-table-cells"
+        "slugs" (slice "unicode" "sequences" "boolean" "enum-types" "timestamps" "zero-dates")
+      )
+      (dict
+        "title" "Query & Syntax Differences"
+        "icon" "fa-solid fa-code-compare"
+        "slugs" (slice "identifier-case-sensitivity" "joins" "concatenate" "last-insert-id" "csv" "import")
+      )
+      (dict
+        "title" "Security & Access"
+        "icon" "fa-solid fa-user-shield"
+        "slugs" (slice "sql-injection" "user-accounts")
+      )
+    }}
+    {{/* The documentation-style view — one annotated list per category,
+         each item carrying its own icon (not just the category's) and a
+         one-line comment (the post's own description, styled like an
+         inline code comment) so the list reads as real documentation of
+         what to watch for, not just a table of contents. */}}
+    <div class="checklist-doc">
+      {{ range $groups }}
+      <div class="checklist-doc-group">
+        <h3><i class="{{ .icon }}"></i> {{ .title }}</h3>
+        <ul class="checklist-doc-list">
+          {{ range .slugs }}
+          {{ with $.Site.GetPage (printf "/post/%s" .) }}
+          <li>
+            <a href="{{ .RelPermalink }}">
+              {{ with .Params.icon }}<i class="{{ . }}"></i>{{ end }}
+              <span class="checklist-doc-title">{{ .Title }}</span>
+            </a>
+            {{ with .Params.description }}<span class="checklist-doc-comment">// {{ . }}</span>{{ end }}
+          </li>
+          {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+    </div>
+
+    <h2 class="faq-hub-all-title">Or jump straight to a category</h2>
+    <div class="checklist-grid">
+      {{ range $groups }}
+      <div class="checklist-card">
+        <i class="{{ .icon }} checklist-icon"></i>
+        <h3>{{ .title }}</h3>
+        <ul>
+          {{ range .slugs }}
+          {{ with $.Site.GetPage (printf "/post/%s" .) }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+          {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+    </div>
+
+    <h2 class="faq-hub-all-title">Browse every question</h2>
+    <div class="faq-grid">
+      {{/* SEO-first ordering: sharp, specific, low-competition queries
+           (encoding corruption, identifier case-sensitivity, zero dates,
+           enum types) lead — this is a small site's realistic path to
+           actually ranking, ahead of high-competition generic questions
+           (joins, SQL injection) that a niche FAQ won't outrank the web's
+           top results for regardless of ordering. */}}
+      {{ range .Pages.ByWeight }}
+      <a class="faq-card" href="{{ .RelPermalink }}">
+        {{ with .Params.icon }}<i class="{{ . }}"></i>{{ end }}
+        <h3>{{ .Title }}</h3>
+        <p>{{ .Params.description }}</p>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ partial "cta.html" . }}
+{{ end }}

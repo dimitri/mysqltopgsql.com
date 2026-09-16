@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 12
+icon: "fa-solid fa-code-branch"
 title: "What's the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL JOIN?"
 description: "SQL basics explained"
 ---

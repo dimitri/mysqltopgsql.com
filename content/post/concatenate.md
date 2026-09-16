@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 11
+icon: "fa-solid fa-link"
 title: "Can I concatenate multiple MySQL rows into one field?"
 description: "Yes sure, that's called an AGGREGATE."
 ---

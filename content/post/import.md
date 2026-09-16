@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 10
+icon: "fa-solid fa-file-import"
 title: "How to import an SQL file using the command line in MySQL?"
 description: "The psql include facility, and the COPY command and protocol."
 ---

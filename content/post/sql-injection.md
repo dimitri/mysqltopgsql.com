@@ -1,5 +1,6 @@
 ---
-featured_image: "/img/mackellar-american-printer-1882-pivotal-caster-1200rgb-2048x.jpg"
+weight: 13
+icon: "fa-solid fa-shield-halved"
 title: "How can I prevent SQL injection in PHP?"
 description: "Little Bobby Tables is fun and all that, but still…"
 ---
