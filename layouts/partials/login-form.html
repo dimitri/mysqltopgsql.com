@@ -16,23 +16,25 @@
   path instead, which returns a real, readable 204 on success — don't
   revert to no-cors if this ever stops working, fix the origin allowlist.
 -->
-{{/* Two callers, two purposes, same mechanism:
-       - homepage: a first-time-visitor lead magnet (the free white paper) —
-         lowest-friction ask, asks for an email and nothing else.
-       - course page: a returning-customer sign-in — course/list.html's own
-         CTA copy already says "Sign in above to read the Continuous
-         Migration core", which this box is what "above" now refers to.
-     Params (all optional, homepage/white-paper copy is the default so an
-     unparameterized call — none left, but kept as a safe fallback — still
-     makes sense): Eyebrow, Heading, Tagline, Next, ButtonLabel, UpsellNote. */}}
+{{/* Two callers, one destination. The white paper is retired — the free
+     sample is modules 1-4 of the migrate course, which is a better lead
+     magnet anyway (it is the actual product, not a PDF about it), so both
+     forms now land the reader in the same place:
+       - homepage: a first-time-visitor lead magnet — lowest-friction ask,
+         an email and nothing else, for the four free modules.
+       - course page: the same form for returning customers who have
+         already bought, and for readers starting on the free four.
+     Params (all optional; the defaults are the free-sample copy, so an
+     unparameterized call still makes sense): Eyebrow, Heading, Tagline,
+     Next, ButtonLabel, UpsellNote. */}}
 <div class="login-box" id="login-box">
   <p class="login-eyebrow">{{ .Eyebrow | default "Free, No Card" }}</p>
-  <h2 class="login-heading">{{ .Heading | default "Get the free migration white paper" }}</h2>
+  <h2 class="login-heading">{{ .Heading | default "Start the course free" }}</h2>
   <p class="login-tagline">{{ .Tagline | default "One email, no password required." }}</p>
   <form id="login-form" class="login-form">
     <label class="login-email-label" for="login-email">Email address</label>
     <input type="email" id="login-email" name="email" required placeholder="you@example.com" autocomplete="email">
-    <button type="submit" class="login-submit">{{ .ButtonLabel | default "Send me the white paper" }}</button>
+    <button type="submit" class="login-submit">{{ .ButtonLabel | default "Send my sign-in link" }}</button>
     <p class="login-status" id="login-status" role="status" aria-live="polite"></p>
   </form>
 </div>
@@ -50,11 +52,11 @@
     status.textContent = 'Sending…';
     var body = new URLSearchParams();
     body.set('email', email);
-    {{/* TODO: placeholder path — the white paper doesn't have a real
-         asset or a hosting route on api.theartofpostgresql.com yet.
-         Swap this for the real gated-download path once that exists;
-         until then this magic link sends but has nowhere real to land. */}}
-    body.set('next', {{ .Next | default "/papers/mysql-to-postgresql" }});
+    {{/* The course's own slug is "migrate", so this is the real route
+         on the platform — not the /papers/... placeholder this used to
+         carry, which had no handler and dropped signed-in readers on a
+         404. Both callers land here now. */}}
+    body.set('next', {{ .Next | default "/courses/migrate" }});
     fetch(apiBase + '/auth/magic-link', {
       method: 'POST',
       mode: 'cors',

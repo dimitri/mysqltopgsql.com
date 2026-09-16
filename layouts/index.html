@@ -2,18 +2,21 @@
 <section class="section section-alt login-section">
   <div class="wrapper">
     <div class="content">
-      {{/* The homepage's job is the lowest-friction ask: an email for the
-           free white paper, not a $99 course opt-in on a cold visit. The
-           course/book/masterclass asks come later, once the visitor has
-           actually read something (see the FAQ teaser and CTA sections
-           below, and course/list.html's own sign-in box). */}}
+      {{/* The homepage's job is still the lowest-friction ask — an email
+           and nothing else, no $79 decision on a cold visit — but the
+           thing being offered has changed: the white paper is retired in
+           favour of the course's own free sample, modules 1-4. Better
+           magnet and a shorter path, since the reader lands in the
+           product rather than in a PDF about it, and the four modules
+           they read are the first four they would have paid for. */}}
       {{ partial "login-form.html" (dict
         "Eyebrow" "Free, No Card"
-        "Heading" "Get the free migration white paper"
-        "Tagline" "The whole Continuous Migration method, one PDF, one email away."
-        "ButtonLabel" "Send me the white paper"
-        "SuccessMessagePrefix" "Check your inbox — we sent your white paper to "
-        "UpsellNote" "While you wait, the full Continuous Migration course covers all of it hands-on."
+        "Heading" "Start the course free"
+        "Tagline" "Modules 1–4 of Migrating to PostgreSQL, free. One email, no password."
+        "ButtonLabel" "Send my sign-in link"
+        "Next" "/courses/migrate"
+        "SuccessMessagePrefix" "Check your inbox — we sent a sign-in link to "
+        "UpsellNote" "That is the method in full; the paid modules are where pgloader, casting rules and the cutover live."
       ) }}
     </div>
   </div>
