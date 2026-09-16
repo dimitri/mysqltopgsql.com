@@ -1622,3 +1622,22 @@ body { background: var(--paper); color: var(--ink-soft); }
 .section .cp-price-alt-item p { font: 400 14px/1.55 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
 .cp-price-note { font: 400 13.5px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin-top: 20px; }
 @media (max-width: 720px) { .cp-price-alt { grid-template-columns: 1fr; } }
+
+/* The price, once, near the top of a ~12,000px page. Not a second pricing
+   block — one line and a jump — because the curriculum is what earns the
+   price and it should still be read first. */
+.cp-nav-price {
+  font: 400 15px/1.6 'Lato', sans-serif;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  margin: 18px 0 4px;
+}
+.cp-nav-price strong { color: var(--plum); font-weight: 700; }
+.cp-nav-price a {
+  color: var(--gold);
+  font-weight: 700;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s ease;
+}
+.cp-nav-price a:hover { border-color: var(--gold-soft); color: var(--gold); }

@@ -28,7 +28,14 @@
         </ul>
         <a href="{{ .Site.Params.github }}" class="site-nav-icon" title="pgloader on GitHub" target="_blank"><i class="fa-brands fa-github"></i></a>
       </div>
-      <a href="{{ "/course/" | relURL }}" class="sticky-cta"><span class="sticky-cta-label">Get the Course &mdash; </span>{{ .Site.Params.course_price }}</a>
+      {{/* On every page this points at /course/. On /course/ itself that
+           was a link to the page you are already on — the one persistent,
+           always-visible call to action on the site, inert on the single
+           page where a reader is deciding to buy. There it goes to the
+           pricing block instead. */}}
+      {{ $cta := "/course/" | relURL }}
+      {{ if eq .Section "course" }}{{ $cta = "#pricing" }}{{ end }}
+      <a href="{{ $cta }}" class="sticky-cta"><span class="sticky-cta-label">Get the Course &mdash; </span>{{ .Site.Params.course_price }}</a>
     </nav>
   </div>
 

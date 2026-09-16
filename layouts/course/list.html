@@ -1,24 +1,4 @@
 {{ define "main" }}
-{{/* course/list.html's own CTA copy below says "Sign in above to read the
-     Continuous Migration core" — there was no sign-in form anywhere on
-     this page for that to refer to. This is that form: returning-customer
-     course access, not the homepage's white-paper lead capture (different
-     copy, different next target — same underlying magic-link mechanism). */}}
-<section class="section section-alt login-section">
-  <div class="wrapper">
-    <div class="content">
-      {{ partial "login-form.html" (dict
-        "Eyebrow" "Free, No Card"
-        "Heading" "Get the Continuous Migration course"
-        "Tagline" "One email, no password required."
-        "ButtonLabel" "Send my sign-in link"
-        "Next" "/courses/mysql-to-postgresql"
-        "SuccessMessagePrefix" "Check your inbox — we sent a sign-in link to "
-      ) }}
-    </div>
-  </div>
-</section>
-
 {{/* The course shipped with a different shape than this page described.
      It is 16 modules in three groups — 6 common, 5 MySQL, 5 SQL Server —
      and the two engine lanes are siblings, not steps: a MySQL buyer never
@@ -34,6 +14,12 @@
   <div class="cp-part-nav-inner">
     <h2 class="cp-part-nav-title">All {{ .Site.Params.course_modules_total }} Modules</h2>
     <p class="cp-part-nav-lede">Six modules everyone gets, then your engine&rsquo;s five. Either lane is {{ .Site.Params.course_modules_lane }} modules; the first {{ .Site.Params.course_modules_free }} are free to read.</p>
+    {{/* The price, stated once up here with a jump to the full block.
+         The detailed pricing belongs after the curriculum — that is the
+         argument, and it has to land before the ask — but the page is
+         ~12,000px tall, so without this a reader who arrives already
+         decided has no way to act on it. */}}
+    <p class="cp-nav-price">From <strong>{{ .Site.Params.course_price }}</strong> for your lane, <strong>{{ .Site.Params.course_price_complete }}</strong> for both &mdash; one payment, lifetime access. <a href="#pricing">Jump to pricing &darr;</a></p>
 
     <h3 class="cp-group-head"><span class="cp-group-tag common">Everyone</span> Migrating to PostgreSQL</h3>
     <table class="cp-part-table">
@@ -386,17 +372,7 @@ $ pgloader mysql://user@host/dbname \
         </div>
       </div>
 
-      <div class="cp-price-alt">
-        <div class="cp-price-alt-item">
-          <h4>{{ .Site.Params.course_price_regional }} &mdash; lower-income regions</h4>
-          <p>All engines, same course. If the full price is a real barrier where you live, take this one; it is on the same checkout page and needs no justification.</p>
-        </div>
-        <div class="cp-price-alt-item">
-          <h4>{{ .Site.Params.course_price_supporter }} &mdash; supporter</h4>
-          <p>The same course at a higher contribution, for readers whose employer is paying and who would rather fund the next lane than not.</p>
-        </div>
-      </div>
-      <p class="cp-price-note">Every option is on <a href="{{ .Site.Params.course_checkout_url }}" target="_blank" rel="noopener">one checkout page</a>, which also takes a price you name yourself. Card or PayPal.</p>
+      <p class="cp-price-note">One payment, lifetime access, updates included. Card or PayPal. The <a href="{{ .Site.Params.course_checkout_url }}" target="_blank" rel="noopener">checkout</a> carries a couple of further options.</p>
 
       <div class="buttons">
         <a href="{{ .Site.Params.course_checkout_url }}" class="btn btn-primary" target="_blank" rel="noopener">See All Pricing Options</a>
@@ -405,6 +381,27 @@ $ pgloader mysql://user@host/dbname \
       <p class="product-note">Already comfortable with the migration and want
       to go deeper on PostgreSQL itself? <a href="{{ .Site.Params.book_url }}" target="_blank" rel="noopener">The
       Art of PostgreSQL</a> covers that ground in full.</p>
+    </div>
+  </div>
+</section>
+
+{{/* Returning-customer sign-in, and the target of the nav's Login link.
+     It used to be the first thing on the page — a sign-in form standing
+     where the value proposition belongs, which reads as a paywall before
+     the reader knows what is behind it. Anchors work from anywhere, so
+     moving it last costs returning customers nothing and gives new
+     readers the curriculum first. */}}
+<section class="section section-alt login-section">
+  <div class="wrapper">
+    <div class="content">
+      {{ partial "login-form.html" (dict
+        "Eyebrow" "Already bought, or reading free"
+        "Heading" "Sign in to the course"
+        "Tagline" "Modules 1&ndash;4 need no purchase. One email, no password."
+        "ButtonLabel" "Send my sign-in link"
+        "Next" "/courses/mysql-to-postgresql"
+        "SuccessMessagePrefix" "Check your inbox — we sent a sign-in link to "
+      ) }}
     </div>
   </div>
 </section>
