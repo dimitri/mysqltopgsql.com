@@ -23,12 +23,28 @@ enableRobotsTXT = false
   github = "https://github.com/dimitri/pgloader"
   custom_css = ["css/custom.css"]
   course_url = "https://theartofpostgresql.com/from-mysql"
-  # $99 once, whole course (modules 5-11; 1-4 stay free) — see the earlier
-  # pricing brief. buy_url is a placeholder until the real ThriveCart
-  # product exists; swap it in one place here once it does, everything
-  # that renders course_price/course_buy_url picks it up automatically.
-  course_price = "$99"
-  course_buy_url = "#"
+
+  # Migration to PostgreSQL — the shipped course. Structure and prices are
+  # the final ones: 16 modules in three groups (6 common, 5 MySQL, 5 SQL
+  # Server), and the two engine lanes are siblings, not steps — a MySQL
+  # buyer never sees the SQL Server modules and vice versa. Each single-
+  # engine tier is therefore 11 modules (6 common + 5 engine), which is
+  # the number the checkout shows.
+  #
+  # One checkout holds every tier; the reader picks there. Everything on
+  # the site renders from these params, so a price change is a one-line
+  # edit here.
+  course_checkout_url = "https://sales.theartofpostgresql.com/migrating-to-postgresql-courses/"
+  course_price = "$79"                  # either single-engine lane
+  course_price_complete = "$129"        # both lanes, plus Oracle when it ships
+  course_price_regional = "$49"         # lower-income regions, all engines
+  course_price_supporter = "$229"       # same course, higher contribution
+  course_modules_total = "16"
+  course_modules_lane = "11"
+  course_modules_free = "4"
+  # Kept for templates that still reference it; the checkout is the one
+  # destination now that a real product exists.
+  course_buy_url = "https://sales.theartofpostgresql.com/migrating-to-postgresql-courses/"
   twitter = "tapoueh"
   # The parent brand's own products — footer "Elsewhere" directory and the
   # About page's book mention. book_update_url is the 2026 Second Edition

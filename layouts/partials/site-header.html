@@ -45,8 +45,8 @@
            from the content, not typed in, so they can't drift. */}}
       <div class="cp-stats-bar">
         <div class="cp-stat"><span class="cp-stat-n">{{ len (where .Site.RegularPages "Section" "post") }}</span><span class="cp-stat-l">FAQ answers</span></div>
-        <div class="cp-stat"><span class="cp-stat-n">11</span><span class="cp-stat-l">Course modules</span></div>
-        <div class="cp-stat"><span class="cp-stat-n">4</span><span class="cp-stat-l">Free to read</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">{{ .Site.Params.course_modules_lane }}</span><span class="cp-stat-l">Course modules</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">{{ .Site.Params.course_modules_free }}</span><span class="cp-stat-l">Free to read</span></div>
       </div>
       <div class="buttons site-hero-buttons">
         <a href="{{ "/course/" | relURL }}" class="btn btn-primary">Get the Course &mdash; {{ .Site.Params.course_price }}</a>
@@ -66,10 +66,14 @@
       <h1>{{ .Title }}</h1>
       {{ with .Params.description }}<p class="site-hero-desc site-hero-desc-centered">{{ . }}</p>{{ end }}
       {{ if eq .Section "course" }}
+      {{/* The shipped course is 16 modules in three groups — 6 common,
+           5 MySQL, 5 SQL Server — so either engine lane is 11. These
+           numbers come from config so they cannot drift from the
+           checkout's own "11 modules" wording. */}}
       <div class="cp-stats-bar">
-        <div class="cp-stat"><span class="cp-stat-n">11</span><span class="cp-stat-l">Modules</span></div>
-        <div class="cp-stat"><span class="cp-stat-n">4</span><span class="cp-stat-l">Free</span></div>
-        <div class="cp-stat"><span class="cp-stat-n">7</span><span class="cp-stat-l">Full Course</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">{{ .Site.Params.course_modules_total }}</span><span class="cp-stat-l">Modules</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">{{ .Site.Params.course_modules_lane }}</span><span class="cp-stat-l">In your lane</span></div>
+        <div class="cp-stat"><span class="cp-stat-n">{{ .Site.Params.course_modules_free }}</span><span class="cp-stat-l">Free to read</span></div>
       </div>
       {{ end }}
     </div>

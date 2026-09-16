@@ -1574,3 +1574,51 @@ body { background: var(--paper); color: var(--ink-soft); }
   .site-hero-buttons { flex-direction: column; align-items: stretch; }
   .section, .section-alt { padding: 44px 20px; }
 }
+
+/* ---- Course page: the module index is grouped by lane now, not one flat
+   1..16 table. The group heading carries a coloured tag so "which of
+   these do I actually get" is answerable at a glance — the single
+   question a three-tier course page has to answer before pricing. */
+.cp-group-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 500 19px 'Bookman', Georgia, serif;
+  color: var(--plum);
+  margin: 34px 0 12px;
+}
+.cp-group-head:first-of-type { margin-top: 8px; }
+.cp-group-tag {
+  font: 700 10.5px 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 4px 9px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.cp-group-tag.common { background: rgba(47, 127, 163, .14); color: var(--sky); }
+.cp-group-tag.mysql  { background: rgba(201, 162, 39, .2);  color: var(--gold); }
+.cp-group-tag.mssql  { background: rgba(55, 38, 73, .1);    color: var(--plum); }
+.cp-part-nav-lede { font: 300 16px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin: -8px 0 4px; }
+.cp-lane-note { font: 400 14px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin-top: 18px; }
+
+/* The two secondary prices sit below the three cards rather than beside
+   them: they are the same product at a different contribution, not a
+   fourth and fifth thing to choose between. Giving them cards of equal
+   weight would have made a five-way decision out of a three-way one. */
+.cp-price-alt {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 26px;
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.cp-price-alt-item h4 {
+  font: 500 16px 'Bookman', Georgia, serif;
+  color: var(--plum);
+  margin: 0 0 6px;
+}
+.section .cp-price-alt-item p { font: 400 14px/1.55 'Lato', sans-serif; color: var(--ink-soft); margin: 0; }
+.cp-price-note { font: 400 13.5px/1.6 'Lato', sans-serif; color: var(--ink-soft); margin-top: 20px; }
+@media (max-width: 720px) { .cp-price-alt { grid-template-columns: 1fr; } }
