@@ -1,0 +1,45 @@
+<aside class="single_sidebar">
+ <h6>RECENT POSTS</h6>
+ <ul>
+ {{ with .PrevInSection }}
+ <li><a class="previous" href="{{.Permalink}}"> {{.Title}}</a></li>
+ {{ end }}
+ {{ with .NextInSection }}
+ <li><a class="next" href="{{.Permalink}}"> {{.Title}}</a></li>
+ {{ end }}
+ </ul>
+ 
+ <h6>TAGS</h6>
+ <div class="tag_list">
+  {{ with .Params.tags }}
+   {{ range . }}
+     <a href="{{ "tags/" | absURL }}{{ . | urlize }}">{{ . }}</a>
+   {{ end }}
+  {{ end }}
+ </div>
+
+ <hr style="margin-top: 2em;"/>
+ {{ partial "share-buttons.html" . }}
+ <hr style="margin-bottom: 0px;"/>
+
+ <div class="meta" style="padding-bottom: 0px; margin-bottom: 2em;">
+   <ul>
+     <li style="text-align: center">
+       <a href="/sql-formatter/">SQL Formatter</a>
+     </li>
+     <li style="text-align: center">
+       <a href="/explain-plan-visualizer/">
+         <img src="/img/pev-icon.png">Query Plan Visualizer</a>
+     </li>
+   </ul>
+ </div>
+ <hr style="margin-bottom: 0px;"/>
+ 
+  <div style="text-align: center; padding: 2em 0;">
+    <a href="https://sales.theartofpostgresql.com/the-art-of-postgresql-book/" class="button button_purple">Get the Book</a>
+  </div>
+
+ <hr style="margin-top: 0px;"/>
+ {{ partial "share-buttons.html" . }}
+
+</aside>
