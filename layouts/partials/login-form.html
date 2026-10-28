@@ -26,7 +26,15 @@
          already bought, and for readers starting on the free four.
      Params (all optional; the defaults are the free-sample copy, so an
      unparameterized call still makes sense): Eyebrow, Heading, Tagline,
-     Next, ButtonLabel, UpsellNote. */}}
+     Next, ButtonLabel, UpsellNote, Src.
+
+     Src is where this signup is reported to have come from. It travels
+     with the POST and the app maps it to a Kit tag of the same name
+     (src:migrate-free, src:pgloader-io), which is what selects the
+     nurture sequence the subscriber lands in. Default migrate-free: a
+     visitor who arrives here directly is a free-modules signup. A caller
+     can override it — the course page could one day report returning
+     customers differently — without touching this template. */}}
 <div class="login-box" id="login-box">
   <p class="login-eyebrow">{{ .Eyebrow | default "Free, No Card" }}</p>
   <h2 class="login-heading">{{ .Heading | default "Start the course free" }}</h2>
@@ -44,6 +52,41 @@
   var form = document.getElementById('login-form');
   var status = document.getElementById('login-status');
   var apiBase = 'https://api.theartofpostgresql.com';
+
+  // Where this reader came from, reported with the signup.
+  //
+  // It arrives as ?src= on the landing URL, but the form they finally
+  // submit is often on a later page — pgloader.io links to /?src=... and
+  // the reader then clicks through to /course/ before signing up — so a
+  // valid value is parked in sessionStorage and read back here. Per tab,
+  // and gone when the tab closes, which is the right lifetime for "how
+  // this visit started".
+  //
+  // Validated against the same shape the tag vocabulary uses, because
+  // this value becomes a Kit tag name: anything else is ignored rather
+  // than forwarded, so a stray or hostile query string cannot invent
+  // tags. Everything touching sessionStorage is wrapped: Safari in
+  // private mode throws on access rather than returning null, and the
+  // form has to keep working when it does.
+  var SRC_KEY = 'taop.src';
+  var SRC_RE = /^[a-z0-9-]{1,32}$/;
+
+  function readSrc() {
+    var fromURL = null;
+    try {
+      fromURL = new URLSearchParams(window.location.search).get('src');
+    } catch (e) { /* no URLSearchParams: fall through to the default */ }
+
+    if (fromURL && SRC_RE.test(fromURL)) {
+      try { window.sessionStorage.setItem(SRC_KEY, fromURL); } catch (e) {}
+      return fromURL;
+    }
+    try {
+      var stored = window.sessionStorage.getItem(SRC_KEY);
+      if (stored && SRC_RE.test(stored)) { return stored; }
+    } catch (e) {}
+    return {{ .Src | default "migrate-free" }};
+  }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = document.getElementById('login-email').value;
@@ -52,6 +95,7 @@
     status.textContent = 'Sending…';
     var body = new URLSearchParams();
     body.set('email', email);
+    body.set('src', readSrc());
     {{/* The course's own slug is "migrate", so this is the real route
          on the platform — not the /papers/... placeholder this used to
          carry, which had no handler and dropped signed-in readers on a
